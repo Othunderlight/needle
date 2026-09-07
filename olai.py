@@ -21,22 +21,44 @@ def check_weather(city: str) -> str:
     """Checks the weather for a given city."""
     return f"The weather in {city} is currently 72°F (22°C) and sunny."
 
+@function_tool
+def get_folder_dir_by_name(name: str) -> str:
+    """Get the directory path of a folder by its name.
+
+    Args:
+        name: The folder name to look up. Supported values: 'ddi', 'desktop'
+    """
+    if name == "ddi":
+        return "~/Downloads/ddi"  # Fixed typo: Dawnloads -> Downloads
+    return "~/desktop/"
+
+
+@function_tool
+def move_to_dir(dir: str) -> str:  # Return string instead of bool
+    """Move to a directory by its directory path.
+
+    Args:
+        dir: The directory path to move to.
+    """
+    if dir == "~/Downloads/ddi":
+        return f"Successfully moved to {dir}"
+    return f"Failed to move to {dir}"
+
+
 # 4. Create the agent and pass the decorated functions directly as tools
 tool_agent = Agent(
     name="MultiToolAgent",
     instructions="You are a helpful assistant. Use your tools whenever appropriate.",
     model=local_model,
-    tools=[check_weather]
+    tools=[check_weather, get_folder_dir_by_name, move_to_dir]
 )
 
 async def main():
-    # Prompt 1: Triggers the weather tool
-    print("--- Testing Weather Tool ---")
 
     # Start timing
     start_time = time.time()
 
-    res1 = await Runner.run(tool_agent, "What's the weather like in Seattle?")
+    res1 = await Runner.run(tool_agent, "lets move to my ddi project?")
 
     # End timing
     end_time = time.time()
