@@ -12,7 +12,7 @@ local_client = AsyncOpenAI(
 
 # 2. Initialize the model
 local_model = OpenAIChatCompletionsModel(
-    model="functiongemma:latest",
+    model="ibm/granite4:350m", # functiongemma:latest :2.8 seconds, ibm/granite4:350m : 2.58 seconds, qwen3:4b :16.39 seconds , qwen3:0.6b : 10.33 seconds,
     openai_client=local_client
 )
 
