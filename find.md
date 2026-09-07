@@ -1,0 +1,1 @@
+ls ~/.cache/huggingface/hub/
