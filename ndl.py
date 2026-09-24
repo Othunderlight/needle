@@ -3,34 +3,163 @@ import subprocess
 from difflib import get_close_matches
 import needle
 
-# ==========================================
-# 1. DATABASES & ALIASES
-# ==========================================
+# # ==========================================
+# # 1. DATABASES & ALIASES
+# # ==========================================
+
+
+# import json
+# from pathlib import Path
+# # Import the scanner function from the script above (or keep it in the same file)
+# from app_scanner import scan_installed_apps
+
+# # 1. Define the path where the cache should be stored
+# # (Tip: Use .config/your_app_name or a hidden dotfile like .apps_database.json)
+# CONFIG_PATH = Path.cwd() / ".apps_database.json"
+
+# def load_apps_database(force_refresh: bool = False) -> dict:
+#     """
+#     Loads the APPS_DATABASE.
+#     If it doesn't exist (first run) or force_refresh=True, it scans the system.
+#     """
+#     if not CONFIG_PATH.exists() or force_refresh:
+#         print("First run detected: Scanning installed applications...")
+#         apps_db = scan_installed_apps()
+
+#         # Ensure the directory exists and write the JSON file
+#         CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
+#         with open(CONFIG_PATH, "w", encoding="utf-8") as f:
+#             json.dump(apps_db, f, indent=4)
+
+#         print(f"Saved {len(apps_db)} applications to {CONFIG_PATH}")
+#         return apps_db
+
+#     # Already scanned before: Load directly from cache for instant startup
+#     with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+#         return json.load(f)
+
+# # 2. Initialize your database variable
+# APPS_DATABASE = load_apps_database()
 
 APPS_DATABASE = {
+    # --- sys apps ---
     "files": {
         "commands": ["nautilus", "org.gnome.Nautilus"],
         "aliases": ["file manager", "explorer", "nautilus", "files"],
+        "category": "system-apps",
     },
-    "chrome": {
-        "commands": ["google-chrome", "google-chrome-stable"],
-        "aliases": ["browser", "google chrome", "chrome", "web browser"],
+    "extension_manager": {
+        "commands": ["flatpak run com.mattjakeman.ExtensionManager"],
+        "aliases": ["extension manager", "gnome extensions", "extensions"],
+        "category": "system-apps",
     },
+    # --- Chat apps ---
     "telegram": {
-        "commands": ["telegram-desktop"],
+        "commands": ["telegram-desktop", "flatpak run org.telegram.desktop"],
         "aliases": ["telegram", "telegram desktop", "tg"],
+        "category": "chatapp",
     },
+    # --- IDEs ---
     "sublime": {
         "commands": ["subl", "sublime_text"],
         "aliases": ["sublime text", "sublime-text", "sublime app", "code editor", "sublime"],
+        "category": "IDE",
+    },
+    "android_studio": {
+        "commands": ["android-studio"],
+        "aliases": ["android studio"],
+        "category": "IDE",
+    },
+    "zed": {
+        "commands": ["zed"],
+        "aliases": ["zed"],
+        "category": "IDE",
+    },
+    "vscode": {
+        "commands": ["code"],
+        "aliases": ["vscode"],
+        "category": "IDE",
+    },
+    "neovim": {
+        "commands": ["nvim"],
+        "aliases": ["neovim", "nvim", "vim", "terminal editor"],
+        "category": "terminal-editor",
+    },
+    "nano": {
+        "commands": ["nano"],
+        "aliases": ["nano"],
+        "category": "terminal-editor",
+    },
+    # --- Brawsers ---
+    "brave": {
+        "commands": ["brave"],
+        "aliases": ["brave browser", "brave"],
+        "category": "browser",
+    },
+    "chrome": {
+        "commands": ["google-chrome", "google-chrome-stable"],
+        "aliases": ["browser", "google chrome", "chrome"],
+        "category": "browser",
+    },
+    # --- Dev Tools ---
+    "ngrok": {
+        "commands": ["ngrok"],
+        "aliases": ["ngrok", "tunnel", "localhost tunnel"],
+        "category": "networking",
+    },
+    "postman": {
+        "commands": ["postman"],
+        "aliases": ["postman", "api tester", "http client"],
+        "category": "developer-tools",
+    },
+    # --- Productivity ---
+    "notion": {
+        "commands": ["notion-desktop"],
+        "aliases": ["notion", "notion desktop", "notes"],
+        "category": "productivity",
+    },
+
+    # --- secreen recorders ---
+    "obs_studio": {
+        "commands": ["flatpak run com.obsproject.Studio"],
+        "aliases": ["obs studio", "obs", "screen recorder", "streaming software"],
+        "category": "screen-recorder",
+    },
+    "kooha": {
+        "commands": ["flatpak run io.github.seadve.Kooha"],
+        "aliases": ["kooha", "screen recorder", "recorder"],
+        "category": "screen-recorder",
+    },
+    # --- AI Agents ---
+    "codex": {
+        "commands": ["codex", "codex app"],
+        "aliases": ["codex", "openai codex", "coding agent", "ai developer", "ai coder"],
+        "category": "agent",
+    },
+    "opencode": {
+        "commands": ["opencode", "opencode -q"],
+        "aliases": ["opencode", "open code", "sst agent", "free coding agent"],
+        "category": "agent",
+    },
+    # --- Terminals ---
+    "ptyxis": {
+        "commands": ["ptyxis", "ptyxis --new-window"],
+        "aliases": ["ptyxis", "gnome prompt", "terminal", "ptyxis terminal"],
+        "category": "terminal-emulator",
+    },
+    "wezterm": {
+        "commands": ["wezterm", "wezterm start"],
+        "aliases": ["wezterm", "wez terminal", "wez"],
+        "category": "terminal-emulator",
     },
 }
+
 
 # Add your custom folders and voice tags here
 FOLDERS_DATABASE = {
     "home": {
         "path": os.path.expanduser("~"),
-        "aliases": ["home", "home folder", "main folder", "user folder"],
+        "aliases": ["home", "home folder", "main folder"],
     },
     "downloads": {
         "path": os.path.expanduser("~/Downloads"),
@@ -40,13 +169,17 @@ FOLDERS_DATABASE = {
         "path": os.path.expanduser("~/Desktop"),
         "aliases": ["desktop", "my desktop"],
     },
-    "video_projects": {
+    "videos": {
         "path": os.path.expanduser("~/Videos"),  # Change to your actual path
-        "aliases": ["video project", "videos", "my video project", "video edit", "video folder"],
+        "aliases": ["video project", "videos", "video folder"],
     },
-    "code_projects": {
-        "path": os.path.expanduser("~/Projects"),        # Change to your actual path
-        "aliases": ["projects", "code", "coding", "dev", "my code", "dev folder"],
+    "content": {
+        "path": os.path.expanduser("~/content"),        # Change to your actual path
+        "aliases": ["content", "content folder", "ai vedio editing"],
+    },
+    "remotion": {
+        "path": os.path.expanduser("~/content/remotion"),        # Change to your actual path
+        "aliases": ["remotion", "remotion folder"],
     },
 }
 
@@ -184,4 +317,4 @@ agent = needle.Needle(tools=[open_app])
 # print(agent.run("open sublime with my video project")["results"])
 
 # Test 3: Files app with downloads
-print(agent.run("open files in my downloads")["results"])
+print(agent.run("open wezterm")["results"])

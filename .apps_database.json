@@ -1,0 +1,1331 @@
+{
+    "zcode": {
+        "commands": [
+            "/home/omar/Desktop/ZCode-3.9.1-linux-x64.AppImage",
+            "ZCode-3.9.1-linux-x64.AppImage"
+        ],
+        "aliases": [
+            "zcode"
+        ]
+    },
+    "zed": {
+        "commands": [
+            "/home/omar/.local/zed.app/bin/zed",
+            "zed"
+        ],
+        "aliases": [
+            "text editor",
+            "zed"
+        ]
+    },
+    "problem_reporting": {
+        "commands": [
+            "gnome-abrt"
+        ],
+        "aliases": [
+            "abrt",
+            "bug reporting",
+            "crash logger",
+            "problem",
+            "problem reporting",
+            "reporting"
+        ]
+    },
+    "parental_controls": {
+        "commands": [
+            "malcontent-control"
+        ],
+        "aliases": [
+            "app restrictions",
+            "child",
+            "controls",
+            "kid",
+            "oars",
+            "parental",
+            "parental controls",
+            "screen time",
+            "usage",
+            "usage limit",
+            "web browser restrictions"
+        ]
+    },
+    "boxes": {
+        "commands": [
+            "gnome-boxes"
+        ],
+        "aliases": [
+            "boxes",
+            "virtual machine",
+            "virtual machine viewer/manager",
+            "vm"
+        ]
+    },
+    "calendar": {
+        "commands": [
+            "gnome-calendar"
+        ],
+        "aliases": [
+            "calendar",
+            "event",
+            "reminder"
+        ]
+    },
+    "characters": {
+        "commands": [
+            "/usr/bin/gnome-characters",
+            "gnome-characters"
+        ],
+        "aliases": [
+            "characters",
+            "emoji",
+            "emoticon",
+            "letters",
+            "math",
+            "punctuation",
+            "symbols",
+            "unicode"
+        ]
+    },
+    "color_profile_viewer": {
+        "commands": [
+            "gcm-viewer"
+        ],
+        "aliases": [
+            "color",
+            "color profile viewer",
+            "icc",
+            "profile",
+            "viewer"
+        ]
+    },
+    "connections": {
+        "commands": [
+            "gnome-connections"
+        ],
+        "aliases": [
+            "access",
+            "connections",
+            "desktop",
+            "rdp",
+            "remote",
+            "support",
+            "view",
+            "vnc",
+            "windows"
+        ]
+    },
+    "contacts": {
+        "commands": [
+            "gnome-contacts"
+        ],
+        "aliases": [
+            "address book",
+            "contacts",
+            "friends"
+        ]
+    },
+    "disks": {
+        "commands": [
+            "gnome-disks"
+        ],
+        "aliases": [
+            "backup",
+            "benchmark",
+            "cdrom",
+            "disc",
+            "disk",
+            "disks",
+            "drive",
+            "dvd",
+            "encryption",
+            "harddisk",
+            "hdd",
+            "image",
+            "iso",
+            "luks",
+            "partition",
+            "raid",
+            "restore",
+            "s.m.a.r.t.",
+            "smart",
+            "volume"
+        ]
+    },
+    "logs": {
+        "commands": [
+            "gnome-logs"
+        ],
+        "aliases": [
+            "debug",
+            "error",
+            "journal",
+            "log",
+            "log viewer",
+            "logs"
+        ]
+    },
+    "rhythmbox": {
+        "commands": [
+            "rhythmbox"
+        ],
+        "aliases": [
+            "audio",
+            "cd",
+            "dlna",
+            "ipod",
+            "last.fm",
+            "mp3",
+            "mtp",
+            "music player",
+            "playlist",
+            "podcast",
+            "radio",
+            "rhythmbox",
+            "song",
+            "upnp"
+        ]
+    },
+    "camera": {
+        "commands": [
+            "snapshot"
+        ],
+        "aliases": [
+            "camera",
+            "photos",
+            "picture",
+            "snapshot",
+            "webcam"
+        ]
+    },
+    "videos": {
+        "commands": [
+            "totem"
+        ],
+        "aliases": [
+            "clip",
+            "disc",
+            "dvd",
+            "film",
+            "movie",
+            "player",
+            "series",
+            "totem",
+            "tv",
+            "video",
+            "videos"
+        ]
+    },
+    "tour": {
+        "commands": [
+            "gnome-tour"
+        ],
+        "aliases": [
+            "gnome",
+            "greeter & tour",
+            "gtk",
+            "tour"
+        ]
+    },
+    "weather": {
+        "commands": [
+            "gapplication launch org.gnome.Weather"
+        ],
+        "aliases": [
+            "forecast",
+            "weather"
+        ]
+    },
+    "disk_usage_analyzer": {
+        "commands": [
+            "baobab"
+        ],
+        "aliases": [
+            "analyzer",
+            "cleanup",
+            "disk",
+            "disk usage analyzer",
+            "space",
+            "storage",
+            "usage"
+        ]
+    },
+    "clocks": {
+        "commands": [
+            "gnome-clocks"
+        ],
+        "aliases": [
+            "alarm",
+            "clocks",
+            "stopwatch",
+            "time",
+            "time zone",
+            "timer",
+            "world clock"
+        ]
+    },
+    "fonts": {
+        "commands": [
+            "gnome-font-viewer"
+        ],
+        "aliases": [
+            "fontface",
+            "fonts"
+        ]
+    },
+    "rygel_preferences": {
+        "commands": [
+            "rygel-preferences"
+        ],
+        "aliases": [
+            "preferences",
+            "rygel",
+            "rygel preferences",
+            "upnp/dlna preferences"
+        ]
+    },
+    "document_scanner": {
+        "commands": [
+            "simple-scan"
+        ],
+        "aliases": [
+            "adf",
+            "document",
+            "document scanner",
+            "flatbed",
+            "scan",
+            "scanner"
+        ]
+    },
+    "help": {
+        "commands": [
+            "yelp"
+        ],
+        "aliases": [
+            "documentation",
+            "help",
+            "information",
+            "manual"
+        ]
+    },
+    "firefox": {
+        "commands": [
+            "firefox"
+        ],
+        "aliases": [
+            "browser",
+            "firefox",
+            "internet",
+            "web",
+            "web browser"
+        ]
+    },
+    "vte_terminal_for_gtk3": {
+        "commands": [
+            "vte-2.91"
+        ],
+        "aliases": [
+            "cli",
+            "cmd",
+            "command",
+            "commandline",
+            "console",
+            "for",
+            "gtk3",
+            "prompt",
+            "ptyxis",
+            "shell",
+            "terminal",
+            "vte",
+            "vte terminal for gtk3"
+        ]
+    },
+    "vte_terminal_for_gtk4": {
+        "commands": [
+            "vte-2.91-gtk4"
+        ],
+        "aliases": [
+            "cli",
+            "cmd",
+            "command",
+            "commandline",
+            "console",
+            "for",
+            "gtk4",
+            "prompt",
+            "ptyxis",
+            "shell",
+            "terminal",
+            "vte",
+            "vte terminal for gtk4"
+        ]
+    },
+    "software": {
+        "commands": [
+            "gnome-software"
+        ],
+        "aliases": [
+            "app",
+            "install",
+            "preferences",
+            "program",
+            "repositories",
+            "software",
+            "sources",
+            "store",
+            "uninstall",
+            "updates",
+            "upgrade"
+        ]
+    },
+    "settings": {
+        "commands": [
+            "gnome-control-center"
+        ],
+        "aliases": [
+            "preferences",
+            "settings"
+        ]
+    },
+    "document_viewer": {
+        "commands": [
+            "evince"
+        ],
+        "aliases": [
+            "djvu",
+            "document",
+            "document viewer",
+            "dvi",
+            "evince",
+            "pdf",
+            "postscript",
+            "presentation",
+            "ps",
+            "tiff",
+            "viewer",
+            "xps"
+        ]
+    },
+    "terminal": {
+        "commands": [
+            "ptyxis"
+        ],
+        "aliases": [
+            "cli",
+            "cmd",
+            "command",
+            "commandline",
+            "console",
+            "container",
+            "distrobox",
+            "podman",
+            "prompt",
+            "ptyxis",
+            "shell",
+            "terminal",
+            "toolbox"
+        ]
+    },
+    "text_editor": {
+        "commands": [
+            "gnome-text-editor"
+        ],
+        "aliases": [
+            "editor",
+            "notepad",
+            "text",
+            "text editor",
+            "write"
+        ]
+    },
+    "calculator": {
+        "commands": [
+            "gnome-calculator"
+        ],
+        "aliases": [
+            "arithmetic",
+            "calculation",
+            "calculator",
+            "financial",
+            "scientific"
+        ]
+    },
+    "maps": {
+        "commands": [
+            "gapplication launch org.gnome.Maps"
+        ],
+        "aliases": [
+            "maps"
+        ]
+    },
+    "gnome_system_monitor": {
+        "commands": [
+            "gnome-system-monitor"
+        ],
+        "aliases": [
+            "cpu",
+            "gnome",
+            "gnome system monitor",
+            "history",
+            "memory",
+            "monitor",
+            "network",
+            "process",
+            "system",
+            "usage"
+        ]
+    },
+    "system_monitor": {
+        "commands": [
+            "gnome-system-monitor"
+        ],
+        "aliases": [
+            "activity",
+            "cpu",
+            "history",
+            "manager",
+            "memory",
+            "monitor",
+            "network",
+            "performance",
+            "process",
+            "system",
+            "system monitor",
+            "task",
+            "usage"
+        ]
+    },
+    "image_viewer": {
+        "commands": [
+            "loupe"
+        ],
+        "aliases": [
+            "graphics",
+            "image",
+            "image viewer",
+            "loupe",
+            "picture",
+            "viewer"
+        ]
+    },
+    "fedora_media_writer": {
+        "commands": [
+            "mediawriter"
+        ],
+        "aliases": [
+            "bootable",
+            "fedora",
+            "fedora media writer",
+            "fmw",
+            "iso",
+            "media",
+            "usb",
+            "writer"
+        ]
+    },
+    "rog_control_center": {
+        "commands": [
+            "rog-control-center"
+        ],
+        "aliases": [
+            "center",
+            "control",
+            "rog",
+            "rog control center"
+        ]
+    },
+    "tweaks": {
+        "commands": [
+            "gnome-tweaks"
+        ],
+        "aliases": [
+            "advanced",
+            "fonts",
+            "keyboard",
+            "preferences",
+            "settings",
+            "startup",
+            "theme",
+            "tweaks",
+            "typing",
+            "xkb"
+        ]
+    },
+    "extensions": {
+        "commands": [
+            "/usr/bin/gnome-extensions-app",
+            "gnome-extensions-app"
+        ],
+        "aliases": [
+            "extensions"
+        ]
+    },
+    "timeshift": {
+        "commands": [
+            "timeshift-launcher"
+        ],
+        "aliases": [
+            "system restore utility",
+            "timeshift"
+        ]
+    },
+    "dnfdragora": {
+        "commands": [
+            "dnfdragora"
+        ],
+        "aliases": [
+            "dnfdragora",
+            "install & remove software"
+        ]
+    },
+    "kitty": {
+        "commands": [
+            "kitty"
+        ],
+        "aliases": [
+            "kitty",
+            "terminal emulator"
+        ]
+    },
+    "flameshot": {
+        "commands": [
+            "flameshot"
+        ],
+        "aliases": [
+            "capture",
+            "flameshot",
+            "screenshot",
+            "screenshot tool",
+            "shutter"
+        ]
+    },
+    "tor_browser_launcher_settings": {
+        "commands": [
+            "torbrowser-launcher --settings"
+        ],
+        "aliases": [
+            "browser",
+            "launcher",
+            "settings",
+            "tor",
+            "tor browser launcher settings"
+        ]
+    },
+    "tor_browser": {
+        "commands": [
+            "torbrowser-launcher"
+        ],
+        "aliases": [
+            "browser",
+            "tor",
+            "tor browser"
+        ]
+    },
+    "htop": {
+        "commands": [
+            "htop"
+        ],
+        "aliases": [
+            "htop",
+            "process",
+            "process viewer",
+            "system",
+            "task"
+        ]
+    },
+    "sound_recorder": {
+        "commands": [
+            "gnome-sound-recorder"
+        ],
+        "aliases": [
+            "application",
+            "audio",
+            "record",
+            "recorder",
+            "sound",
+            "sound recorder"
+        ]
+    },
+    "visual_studio_code": {
+        "commands": [
+            "/usr/share/code/code",
+            "code"
+        ],
+        "aliases": [
+            "code",
+            "studio",
+            "text editor",
+            "visual",
+            "visual studio code",
+            "vscode"
+        ]
+    },
+    "droidcam_client_obs": {
+        "commands": [
+            "/usr/local/bin/droidcam",
+            "droidcam"
+        ],
+        "aliases": [
+            "(obs)",
+            "client",
+            "droidcam",
+            "droidcam client (obs)"
+        ]
+    },
+    "kde_system_settings": {
+        "commands": [
+            "systemsettings"
+        ],
+        "aliases": [
+            "kde",
+            "kde system settings",
+            "settings",
+            "system",
+            "systemsettings"
+        ]
+    },
+    "system_settings": {
+        "commands": [
+            "systemsettings"
+        ],
+        "aliases": [
+            "settings",
+            "system",
+            "system settings",
+            "systemsettings"
+        ]
+    },
+    "menu_editor": {
+        "commands": [
+            "kmenuedit"
+        ],
+        "aliases": [
+            "editor",
+            "kmenuedit",
+            "menu",
+            "menu editor"
+        ]
+    },
+    "firewall": {
+        "commands": [
+            "firewall-config"
+        ],
+        "aliases": [
+            "firewall",
+            "iptables",
+            "netfilter",
+            "network",
+            "security"
+        ]
+    },
+    "system_monitor_1": {
+        "commands": [
+            "plasma-systemmonitor"
+        ],
+        "aliases": [
+            "cpu",
+            "manager",
+            "memory",
+            "monitor",
+            "process",
+            "system",
+            "system monitor",
+            "task"
+        ]
+    },
+    "info_center": {
+        "commands": [
+            "kinfocenter"
+        ],
+        "aliases": [
+            "center",
+            "info",
+            "info center",
+            "kinfocenter"
+        ]
+    },
+    "welcome_center": {
+        "commands": [
+            "plasma-welcome"
+        ],
+        "aliases": [
+            "center",
+            "contribute",
+            "get involved",
+            "onboarding",
+            "welcome",
+            "welcome center",
+            "wizard"
+        ]
+    },
+    "kwalletmanager": {
+        "commands": [
+            "kwalletmanager5"
+        ],
+        "aliases": [
+            "kwalletmanager",
+            "password manager"
+        ]
+    },
+    "filelight": {
+        "commands": [
+            "filelight"
+        ],
+        "aliases": [
+            "disk",
+            "disk usage statistics",
+            "drive",
+            "filelight",
+            "space",
+            "storage",
+            "usage"
+        ]
+    },
+    "kde_partition_manager": {
+        "commands": [
+            "partitionmanager"
+        ],
+        "aliases": [
+            "disk",
+            "kde",
+            "kde partition manager",
+            "manager",
+            "partition",
+            "partition editor"
+        ]
+    },
+    "vlc_media_player": {
+        "commands": [
+            "/usr/bin/vlc --started-from-file",
+            "vlc"
+        ],
+        "aliases": [
+            "audio",
+            "broadcast",
+            "capture",
+            "dvd",
+            "media",
+            "media player",
+            "player",
+            "server",
+            "video",
+            "vlc",
+            "vlc media player"
+        ]
+    },
+    "journald_browser": {
+        "commands": [
+            "kjournaldbrowser"
+        ],
+        "aliases": [
+            "browser",
+            "journald",
+            "journald browser"
+        ]
+    },
+    "kcharselect": {
+        "commands": [
+            "kcharselect --qwindowtitle"
+        ],
+        "aliases": [
+            "character selector",
+            "kcharselect"
+        ]
+    },
+    "kdebugsettings": {
+        "commands": [
+            "kdebugsettings"
+        ],
+        "aliases": [
+            "categories",
+            "category",
+            "debug",
+            "debug settings",
+            "journal",
+            "kdebugsettings",
+            "log",
+            "logging",
+            "logging levels"
+        ]
+    },
+    "nvidia_x_server_settings": {
+        "commands": [
+            "nvidia-settings"
+        ],
+        "aliases": [
+            "nvidia",
+            "nvidia x server settings",
+            "server",
+            "settings"
+        ]
+    },
+    "lutris": {
+        "commands": [
+            "lutris"
+        ],
+        "aliases": [
+            "emulator",
+            "gaming",
+            "lutris",
+            "wine"
+        ]
+    },
+    "drawing": {
+        "commands": [
+            "drawing"
+        ],
+        "aliases": [
+            "drawing",
+            "paint",
+            "pencil",
+            "sketch"
+        ]
+    },
+    "flatseal": {
+        "commands": [
+            "com.github.tchx84.Flatseal"
+        ],
+        "aliases": [
+            "flatseal",
+            "override",
+            "sandbox",
+            "seal"
+        ]
+    },
+    "wezterm": {
+        "commands": [
+            "wezterm start --cwd ."
+        ],
+        "aliases": [
+            "cmd",
+            "command",
+            "commandline",
+            "prompt",
+            "shell",
+            "wezterm"
+        ]
+    },
+    "meetily": {
+        "commands": [
+            "meetily"
+        ],
+        "aliases": [
+            "meetily"
+        ]
+    },
+    "sublime_text": {
+        "commands": [
+            "/opt/sublime_text/sublime_text",
+            "sublime_text"
+        ],
+        "aliases": [
+            "sublime",
+            "sublime text",
+            "text",
+            "text editor"
+        ]
+    },
+    "google_chrome": {
+        "commands": [
+            "/usr/bin/google-chrome-stable",
+            "google-chrome-stable"
+        ],
+        "aliases": [
+            "chrome",
+            "google",
+            "google chrome",
+            "web browser"
+        ]
+    },
+    "calf_plugin_pack_for_jack": {
+        "commands": [
+            "calfjackhost"
+        ],
+        "aliases": [
+            "audio,plug-in",
+            "calf",
+            "calf plugin pack for jack",
+            "effect",
+            "for",
+            "instrument",
+            "jack",
+            "pack",
+            "plugin"
+        ]
+    },
+    "easy_effects": {
+        "commands": [
+            "easyeffects"
+        ],
+        "aliases": [
+            "autovolume",
+            "compressor",
+            "easy",
+            "easy effects",
+            "effects",
+            "equalizer",
+            "equalizer, compressor and other audio effects",
+            "limiter",
+            "reverberation"
+        ]
+    },
+    "avidemux": {
+        "commands": [
+            "avidemux3_qt6"
+        ],
+        "aliases": [
+            "avidemux",
+            "video editor"
+        ]
+    },
+    "warp": {
+        "commands": [
+            "warp-terminal"
+        ],
+        "aliases": [
+            "cmd",
+            "command",
+            "commandline",
+            "prompt",
+            "shell",
+            "terminalemulator",
+            "warp"
+        ]
+    },
+    "hermes_agent": {
+        "commands": [
+            "/opt/Hermes Agent/hermes-desktop",
+            "Hermes"
+        ],
+        "aliases": [
+            "agent",
+            "hermes",
+            "hermes agent"
+        ]
+    },
+    "onyx": {
+        "commands": [
+            "onyx"
+        ],
+        "aliases": [
+            "onyx"
+        ]
+    },
+    "antigravity": {
+        "commands": [
+            "/usr/share/antigravity/antigravity",
+            "antigravity"
+        ],
+        "aliases": [
+            "antigravity",
+            "text editor",
+            "vscode"
+        ]
+    },
+    "terax": {
+        "commands": [
+            "terax"
+        ],
+        "aliases": [
+            "terax"
+        ]
+    },
+    "voquill": {
+        "commands": [
+            "Voquill"
+        ],
+        "aliases": [
+            "voquill"
+        ]
+    },
+    "gromit_mpx": {
+        "commands": [
+            "gromit-mpx"
+        ],
+        "aliases": [
+            "gromit-mpx",
+            "markup",
+            "overlay",
+            "pointer",
+            "presentation"
+        ]
+    },
+    "db_browser_for_sqlite": {
+        "commands": [
+            "sqlitebrowser"
+        ],
+        "aliases": [
+            "browser",
+            "db browser for sqlite",
+            "for",
+            "sqlite"
+        ]
+    },
+    "files": {
+        "commands": [
+            "nautilus --new-window"
+        ],
+        "aliases": [
+            "disk",
+            "explore",
+            "files",
+            "filesystem",
+            "folder",
+            "manager",
+            "nautilus"
+        ]
+    },
+    "davinci_helper": {
+        "commands": [
+            "davinci-helper"
+        ],
+        "aliases": [
+            "davinci",
+            "davinci helper",
+            "editing",
+            "helper",
+            "resolve",
+            "video"
+        ]
+    },
+    "terminal_1": {
+        "commands": [
+            "gnome-terminal"
+        ],
+        "aliases": [
+            "cli",
+            "cmd",
+            "command",
+            "commandline",
+            "console",
+            "prompt",
+            "ptyxis",
+            "shell",
+            "terminal"
+        ]
+    },
+    "telegram": {
+        "commands": [
+            "/var/lib/snapd/snap/bin/telegram-desktop",
+            "telegram-desktop"
+        ],
+        "aliases": [
+            "chat",
+            "im",
+            "messaging",
+            "messenger",
+            "sms",
+            "tdesktop",
+            "telegram",
+            "tg"
+        ]
+    },
+    "brave_web_browser": {
+        "commands": [
+            "/var/lib/snapd/snap/bin/brave",
+            "brave"
+        ],
+        "aliases": [
+            "brave",
+            "brave web browser",
+            "browser",
+            "web",
+            "web browser"
+        ]
+    },
+    "neovim": {
+        "commands": [
+            "/var/lib/snapd/snap/bin/nvim",
+            "nvim"
+        ],
+        "aliases": [
+            "editor",
+            "neovim",
+            "nvim",
+            "text",
+            "text editor"
+        ]
+    },
+    "android_studio": {
+        "commands": [
+            "/var/lib/snapd/snap/bin/android-studio",
+            "android-studio"
+        ],
+        "aliases": [
+            "android",
+            "android studio",
+            "studio"
+        ]
+    },
+    "steam": {
+        "commands": [
+            "/var/lib/snapd/snap/bin/steam",
+            "steam"
+        ],
+        "aliases": [
+            "steam"
+        ]
+    },
+    "postman": {
+        "commands": [
+            "/var/lib/snapd/snap/bin/postman",
+            "postman"
+        ],
+        "aliases": [
+            "postman"
+        ]
+    },
+    "notion_desktop": {
+        "commands": [
+            "/var/lib/snapd/snap/bin/notion-desktop",
+            "notion-desktop"
+        ],
+        "aliases": [
+            "notion-desktop"
+        ]
+    },
+    "extension_manager": {
+        "commands": [
+            "/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=extension-manager --file-forwarding com.mattjakeman.ExtensionManager",
+            "flatpak"
+        ],
+        "aliases": [
+            "extension",
+            "extension manager",
+            "manager",
+            "shell"
+        ]
+    },
+    "obs_studio": {
+        "commands": [
+            "/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=obs com.obsproject.Studio",
+            "flatpak"
+        ],
+        "aliases": [
+            "obs",
+            "obs studio",
+            "streaming/recording software",
+            "studio"
+        ]
+    },
+    "protonup_qt": {
+        "commands": [
+            "/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=net.davidotek.pupgui2 net.davidotek.pupgui2",
+            "flatpak"
+        ],
+        "aliases": [
+            "protonup-qt"
+        ]
+    },
+    "kooha": {
+        "commands": [
+            "/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=kooha io.github.seadve.Kooha",
+            "flatpak"
+        ],
+        "aliases": [
+            "kooha",
+            "recorder",
+            "screen",
+            "screencast",
+            "video"
+        ]
+    },
+    "ngrok": {
+        "commands": [
+            "ngrok",
+            "/var/lib/snapd/snap/bin/ngrok"
+        ],
+        "aliases": [
+            "ngrok",
+            "ngrok cli",
+            "ngrok tool"
+        ]
+    },
+    "codex": {
+        "commands": [
+            "codex",
+            "/home/omar/.nvm/versions/node/v24.5.0/bin/codex"
+        ],
+        "aliases": [
+            "codex",
+            "codex cli",
+            "codex tool"
+        ]
+    },
+    "opencode": {
+        "commands": [
+            "opencode",
+            "/home/omar/.bun/bin/opencode"
+        ],
+        "aliases": [
+            "opencode",
+            "opencode cli",
+            "opencode tool"
+        ]
+    },
+    "tmux": {
+        "commands": [
+            "tmux",
+            "/usr/bin/tmux"
+        ],
+        "aliases": [
+            "tmux",
+            "tmux cli",
+            "tmux tool"
+        ]
+    },
+    "zoxide": {
+        "commands": [
+            "zoxide",
+            "/usr/bin/zoxide"
+        ],
+        "aliases": [
+            "zoxide",
+            "zoxide cli",
+            "zoxide tool"
+        ]
+    },
+    "gh": {
+        "commands": [
+            "gh",
+            "/usr/bin/gh"
+        ],
+        "aliases": [
+            "gh",
+            "gh cli",
+            "gh tool"
+        ]
+    },
+    "git": {
+        "commands": [
+            "git",
+            "/usr/bin/git"
+        ],
+        "aliases": [
+            "git",
+            "git cli",
+            "git tool"
+        ]
+    },
+    "curl": {
+        "commands": [
+            "curl",
+            "/usr/bin/curl"
+        ],
+        "aliases": [
+            "curl",
+            "curl cli",
+            "curl tool"
+        ]
+    },
+    "wget": {
+        "commands": [
+            "wget",
+            "/usr/bin/wget"
+        ],
+        "aliases": [
+            "wget",
+            "wget cli",
+            "wget tool"
+        ]
+    }
+}
