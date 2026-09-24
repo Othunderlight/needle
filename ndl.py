@@ -84,14 +84,16 @@ APPS_DATABASE = {
         "category": "IDE",
     },
     "neovim": {
-        "commands": ["nvim"],
-        "aliases": ["neovim", "nvim", "vim", "terminal editor"],
         "category": "terminal-editor",
+        "aliases": ["neovim", "nvim", "vim", "terminal editor"],
+        "prefix": default_terminal,
+        "commands": ["nvim"],
     },
     "nano": {
-        "commands": ["nano"],
-        "aliases": ["nano"],
         "category": "terminal-editor",
+        "aliases": ["nano"],
+        "prefix": default_terminal,
+        "commands": ["nano"],
     },
     # --- Brawsers ---
     "brave": {
@@ -106,9 +108,10 @@ APPS_DATABASE = {
     },
     # --- Dev Tools ---
     "ngrok": {
-        "commands": ["ngrok"],
         "aliases": ["ngrok", "tunnel", "localhost tunnel"],
         "category": "networking",
+        "prefix": default_terminal,
+        "commands": ["ngrok"],
     },
     "postman": {
         "commands": ["postman"],
@@ -159,6 +162,13 @@ APPS_DATABASE = {
         "aliases": ["wezterm", "wez terminal", "wez"],
         "path_args": ["--cwd"],
         "category": "terminal-emulator",
+    },
+     # --- VPNs ---
+    "protonvpn": {
+        "category": "VPN",
+        "aliases": ["protonvpn", "proton", "vpn"],
+        "prefix": default_terminal,
+        "commands": ["protonvpn connect"],
     },
 }
 
