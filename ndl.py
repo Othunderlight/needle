@@ -2,7 +2,8 @@ import os
 import subprocess
 from difflib import get_close_matches
 import needle
-
+import shlex
+import shutil
 # # ==========================================
 # # 1. DATABASES & ALIASES
 # # ==========================================
@@ -40,6 +41,8 @@ import needle
 
 # # 2. Initialize your database variable
 # APPS_DATABASE = load_apps_database()
+
+default_terminal=["ptyxis", "--"]
 
 APPS_DATABASE = {
     # --- sys apps ---
@@ -132,24 +135,29 @@ APPS_DATABASE = {
     },
     # --- AI Agents ---
     "codex": {
-        "commands": ["codex", "codex app"],
-        "aliases": ["codex", "openai codex", "coding agent", "ai developer", "ai coder"],
         "category": "agent",
+        "aliases": ["codex", "openai codex"],
+        "prefix": default_terminal,
+        "commands": ["ptyxis && codex", "codex app"],
+        "path_args": ["--cd"],
+
     },
     "opencode": {
-        "commands": ["opencode", "opencode -q"],
-        "aliases": ["opencode", "open code", "sst agent", "free coding agent"],
         "category": "agent",
+        "aliases": ["opencode", "open code"],
+        "prefix": default_terminal,
+        "commands": ["opencode", "opencode -q"],
     },
     # --- Terminals ---
     "ptyxis": {
-        "commands": ["ptyxis", "ptyxis --new-window"],
-        "aliases": ["ptyxis", "gnome prompt", "terminal", "ptyxis terminal"],
+        "commands": ["ptyxis"],
+        "aliases": ["terminal"],
         "category": "terminal-emulator",
     },
     "wezterm": {
-        "commands": ["wezterm", "wezterm start"],
+        "commands": ["wezterm start"],
         "aliases": ["wezterm", "wez terminal", "wez"],
+        "path_args": ["--cwd"],
         "category": "terminal-emulator",
     },
 }
@@ -263,30 +271,138 @@ def open_app(app_name: str, target_folder: str = "") -> str:
     return _launch_with_fallback(app_key, resolved_path)
 
 
+def _build_command(app_data: dict, base_command: str, path_arg: str = None) -> list[str]:
+    """Builds the final command list respecting custom path arguments."""
+    cmd_list = shlex.split(base_command)
+
+    if not path_arg:
+        return cmd_list
+
+    # Check if app defines custom arguments for paths
+    custom_path_args = app_data.get("path_args")
+
+    if custom_path_args:
+        # Support either list format ['start', '--cwd'] or placeholder ['--cwd={path}']
+        formatted_args = []
+        has_placeholder = False
+
+        for arg in custom_path_args:
+            if "{path}" in arg:
+                formatted_args.append(arg.replace("{path}", path_arg))
+                has_placeholder = True
+            else:
+                formatted_args.append(arg)
+
+        cmd_list.extend(formatted_args)
+        if not has_placeholder:
+            cmd_list.append(path_arg)
+    else:
+        # Default behavior: append path directly (e.g., `code /path`, `subl /path`)
+        cmd_list.append(path_arg)
+
+    return cmd_list
+
+
+def _get_prefix_candidates(app_data: dict) -> list[list[str]]:
+    """Normalizes 'prefix' or 'prefixes' into a list of candidate token lists."""
+    raw = app_data.get("prefixes") or app_data.get("prefix")
+    if not raw:
+        return [[]]  # No prefix needed
+
+    if isinstance(raw, str):
+        return [shlex.split(raw)]
+
+    if isinstance(raw, list):
+        if not raw:
+            return [[]]
+        # List of candidate strings: ["ptyxis --", "wezterm start --"]
+        if all(isinstance(x, str) and " " in x for x in raw):
+            return [shlex.split(p) for p in raw]
+        # List of candidate token lists: [["ptyxis", "--"], ["wezterm", "start", "--"]]
+        if all(isinstance(x, list) for x in raw):
+            return raw
+        # Single token list: ["ptyxis", "--"]
+        return [raw]
+
+    return [[]]
+
+
+def _build_final_command(
+    prefix_tokens: list[str],
+    command_str: str,
+    app_data: dict,
+    path_arg: str = None
+) -> list[str]:
+    """Combines prefix, base command, and path argument cleanly."""
+    cmd_tokens = shlex.split(command_str)
+
+    # 1. Check if prefix already handles {path} (e.g. ptyxis --working-directory={path} --)
+    formatted_prefix = []
+    path_consumed_in_prefix = False
+
+    for token in prefix_tokens:
+        if path_arg and "{path}" in token:
+            formatted_prefix.append(token.replace("{path}", path_arg))
+            path_consumed_in_prefix = True
+        else:
+            formatted_prefix.append(token)
+
+    # 2. If path is provided and prefix didn't use it, format path for the inner command
+    if path_arg and not path_consumed_in_prefix:
+        custom_path_args = app_data.get("path_args")
+        if custom_path_args:
+            path_tokens = []
+            has_placeholder = False
+            for arg in custom_path_args:
+                if "{path}" in arg:
+                    path_tokens.append(arg.replace("{path}", path_arg))
+                    has_placeholder = True
+                else:
+                    path_tokens.append(arg)
+            cmd_tokens.extend(path_tokens)
+            if not has_placeholder:
+                cmd_tokens.append(path_arg)
+        else:
+            # Default behavior: append path directly
+            cmd_tokens.append(path_arg)
+
+    return formatted_prefix + cmd_tokens
+
+
 def _launch_with_fallback(app_key: str, path_arg: str = None) -> str:
-    """Try multiple commands to launch an app, with optional path argument."""
+    """Try multiple commands to launch an app, with optional prefix and path argument."""
     app_data = APPS_DATABASE[app_key]
+    prefix_candidates = _get_prefix_candidates(app_data)
 
     for command in app_data["commands"]:
-        try:
-            result = subprocess.run(["which", command], capture_output=True, text=True)
-            if result.returncode == 0:
-                cmd_list = [command]
-                if path_arg:
-                    cmd_list.append(path_arg)
+        cmd_tokens = shlex.split(command)
+        inner_binary = cmd_tokens[0]
+
+        # Check if the target app binary exists
+        if not shutil.which(inner_binary):
+            continue
+
+        # Find a working prefix (terminal emulator / wrapper)
+        for prefix in prefix_candidates:
+            # If a prefix is specified, ensure its binary exists too
+            if prefix and not shutil.which(prefix[0]):
+                continue
+
+            try:
+                full_cmd = _build_final_command(prefix, command, app_data, path_arg)
 
                 subprocess.Popen(
-                    cmd_list,
+                    full_cmd,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
-                    start_new_session=True
+                    start_new_session=True,
                 )
                 target_msg = f" at '{path_arg}'" if path_arg else ""
-                return f"✅ Successfully opened {app_key}{target_msg} (using '{command}')"
-        except Exception:
-            pass
+                return f"✅ Successfully opened {app_key}{target_msg} (ran: `{' '.join(full_cmd)}`)"
+            except Exception:
+                continue
 
-    # Fallback to gtk-launch (supports files/paths in FreeDesktop standard)
+    # Fallback to gtk-launch
     try:
         cmd_list = ["gtk-launch", app_key]
         if path_arg:
@@ -296,7 +412,7 @@ def _launch_with_fallback(app_key: str, path_arg: str = None) -> str:
             cmd_list,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
-            start_new_session=True
+            start_new_session=True,
         )
         target_msg = f" at '{path_arg}'" if path_arg else ""
         return f"✅ Successfully opened {app_key}{target_msg} via desktop launcher"
@@ -317,4 +433,4 @@ agent = needle.Needle(tools=[open_app])
 # print(agent.run("open sublime with my video project")["results"])
 
 # Test 3: Files app with downloads
-print(agent.run("open wezterm")["results"])
+print(agent.run("open opencode in remotion folder")["results"])
