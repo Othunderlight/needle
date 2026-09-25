@@ -1,10 +1,13 @@
 import subprocess
 import time
 import uuid
+import asyncio
+import json
 from typing import Any, List, Optional, Union
 from fastapi import FastAPI, HTTPException, BackgroundTasks, Request
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import StreamingResponse
 from pydantic import BaseModel, Field
 import uvicorn
 
@@ -86,6 +89,40 @@ class Usage(BaseModel):
     total_tokens: int = 0
 
 
+async def stream_generator(content: str, model: str, chat_id: str, created: int):
+    """Generates OpenAI-compatible SSE stream chunks."""
+    words = content.split() if content else []
+    for i, word in enumerate(words):
+        word_chunk = word + " " if i < len(words) - 1 else word
+        chunk = {
+            "id": chat_id,
+            "object": "chat.completion.chunk",
+            "created": created,
+            "model": model,
+            "choices": [{
+                "index": 0,
+                "delta": {"role": "assistant", "content": word_chunk},
+                "finish_reason": None
+            }]
+        }
+        yield f"data: {json.dumps(chunk)}\n\n"
+        await asyncio.sleep(0.05)
+
+    final_chunk = {
+        "id": chat_id,
+        "object": "chat.completion.chunk",
+        "created": created,
+        "model": model,
+        "choices": [{
+            "index": 0,
+            "delta": {},
+            "finish_reason": "stop"
+        }]
+    }
+    yield f"data: {json.dumps(final_chunk)}\n\n"
+    yield "data: [DONE]\n\n"
+
+
 class ChatCompletionResponse(BaseModel):
     id: str
     object: str = "chat.completion"
@@ -123,8 +160,8 @@ async def list_models():
     }
 
 
-@app.post("/v1/chat/completions", response_model=ChatCompletionResponse)
-@app.post("/chat/completions", response_model=ChatCompletionResponse)
+@app.post("/v1/chat/completions")
+@app.post("/chat/completions")
 async def chat_completions(
     req: ChatCompletionRequest,
     background_tasks: BackgroundTasks,  # <-- Injected by FastAPI
@@ -141,13 +178,21 @@ async def chat_completions(
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Agent workflow error: {str(exc)}")
 
-    # Enqueue TTS to run in the background right after sending the response
+    chat_id = f"chatcmpl-{uuid.uuid4().hex}"
+    created = int(time.time())
+
     if final_answer:
         background_tasks.add_task(play_voice, final_answer)
 
+    if req.stream:
+        return StreamingResponse(
+            stream_generator(final_answer or "", req.model, chat_id, created),
+            media_type="text/event-stream"
+        )
+
     return ChatCompletionResponse(
-        id=f"chatcmpl-{uuid.uuid4().hex}",
-        created=int(time.time()),
+        id=chat_id,
+        created=created,
         model=req.model,
         choices=[
             Choice(
