@@ -5,7 +5,7 @@ import uuid
 from typing import Any, Optional
 from openai import AsyncOpenAI
 from pydantic import BaseModel, Field
-
+from ndl import run_command_agent
 # Core primitives from the OpenAI Agents SDK
 from agents import (
     Agent,
@@ -29,7 +29,7 @@ set_tracing_disabled(True)
 
 # Wrap the client in the SDK's OpenAIChatCompletionsModel adapter
 ollama_model = OpenAIChatCompletionsModel(
-    model="llama3.2",  # Replace with the model installed in your Ollama
+    model="gemma3:270m",  # Replace with the model installed in your Ollama
     openai_client=ollama_client,
 )
 
@@ -45,9 +45,9 @@ class AgentDecision(BaseModel):
         None,
         description="Direct answer to the user if needs_tool is False.",
     )
-    cli_command: Optional[str] = Field(
+    assistant: Optional[str] = Field(
         None,
-        description="The CLI command or query to execute, or the revised command if retrying after an error.",
+        description="The query to pass to the assistant, or the revised command if retrying after an error.",
     )
     is_complete: bool = Field(
         False,
@@ -71,15 +71,15 @@ You are an intelligent triage and feedback agent. You have NO direct tool callin
 
 Your tasks:
 1. INITIAL USER TURN:
-   - Determine if the user's query requires executing a CLI/system command.
+   - Determine if the user's query requires passing it the assistant.
    - If NO: set needs_tool=False, provide the answer in direct_response, and set is_complete=True.
-   - If YES: set needs_tool=True, is_complete=False, and formulate the exact shell command in cli_command.
+   - If YES: set needs_tool=True, is_complete=False, and pass the cleaned user input query to the assistant.
 
 2. SUBSEQUENT TURNS (AFTER TOOL EXECUTION):
-   - Review the CLI execution result (status, stdout, and error message).
+   - Review the assistant result (status, stdout, and error message).
    - If SUCCESS: Set is_complete=True and write a clear summary of what happened in user_feedback.
    - If FAILED:
-     - If you can fix the issue, provide a new revised command in cli_command and keep is_complete=False.
+     - If you can fix the issue, provide a new revised command in assistant and keep is_complete=False.
      - If it cannot be fixed, set is_complete=True and explain the failure in user_feedback.
 """,
 )
@@ -92,41 +92,34 @@ cli_clarifier_agent = Agent(
     name="CLIClarifierAgent",
     model=ollama_model,
     instructions=(
-        "You are a CLI formatting agent. Given an incoming command or query, make sure "
-        "it is a clean, single-line shell command. Output ONLY the raw command."
+        "You are a formatting agent. Given an incoming query, make sure "
+        "it is a clean, single-line, ready for the assitant to excute it. Output ONLY the raw query."
     ),
 )
 
 
-def run_cli_command(command: str) -> dict[str, Any]:
+def run_assistant(command: str) -> dict[str, Any]:
     """
-    Executes a CLI command and returns structured feedback (output or error).
+    Executes a CLI command using the run_command_agent helper and returns structured feedback.
     """
     print(f"  [CLI Executing]: {command}")
     try:
-        # Run command with a timeout for safety
-        process = subprocess.run(
-            command,
-            shell=True,
-            capture_output=True,
-            text=True,
-            timeout=10,
-        )
-        if process.returncode == 0:
+        result = run_command_agent(command)
+        if result.get("success"):
             return {
                 "status": "success",
-                "output": process.stdout.strip() or "(Command ran with no stdout output)",
+                "output": "; results[0] if result.get("results") else "(Command ran with no output)",
                 "error": None,
                 "exit_code": 0,
             }
         else:
             return {
                 "status": "error",
-                "output": process.stdout.strip(),
-                "error": process.stderr.strip() or f"Command exited with code {process.returncode}",
-                "exit_code": process.returncode,
+                "output": result.get("results", [])[0] if result.get("results") else "",
+                "error": result.get("error") or result.get("reason") or f"Command exited with code {result.get('error_code')}",
+                "exit_code": result.get("error_code") or -1,
             }
-    except Exception as exc:
+    except (ValueError, KeyError) as exc:
         return {
             "status": "error",
             "output": "",
@@ -178,7 +171,7 @@ async def run_workflow(user_query: str, max_retries: int = 3):
             return decision.user_feedback
 
         # CASE 3: Tool is required or retrying with revised command
-        raw_cmd = decision.cli_command
+        raw_cmd = decision.assistant
         print(f"[Decision]: Tool required. Initial command proposed: '{raw_cmd}'")
 
         # Pass to Agent 2 to clarify/format the command
@@ -186,7 +179,7 @@ async def run_workflow(user_query: str, max_retries: int = 3):
         clean_command = clarified_result.final_output.strip().strip("`")
 
         # Execute via the Python CLI function
-        cli_result = run_cli_command(clean_command)
+        cli_result = run_assistant(clean_command)
 
         # Feed the result back to Agent 1 for evaluation in the next turn
         current_prompt = (
@@ -197,7 +190,7 @@ async def run_workflow(user_query: str, max_retries: int = 3):
             f"- Error Message: {cli_result['error']}\n\n"
             "Based on this feedback:\n"
             "1. If successful: set is_complete=True and write the final feedback for the user in user_feedback.\n"
-            "2. If it failed and can be retried: set is_complete=False, needs_tool=True, and provide a revised command in cli_command.\n"
+            "2. If it failed and can be retried: set is_complete=False, needs_tool=True, and provide a revised command in assistant.\n"
             "3. If it failed and cannot be resolved: set is_complete=True and explain the error in user_feedback."
         )
 
@@ -212,7 +205,7 @@ async def main():
     await run_workflow("What is the capital of France?")
 
     # Test 2: Query that needs a tool and succeeds
-    await run_workflow("Check what operating system kernel version this machine is running")
+    await run_workflow("open terminal in remotion folder")
 
     # Test 3: Query that fails initially and triggers the retry loop
     await run_workflow("Print the content of myfile.txt, but if it doesn't exist, list files in the current folder")

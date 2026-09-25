@@ -434,7 +434,7 @@ def _launch_with_fallback(app_key: str, path_arg: str = None) -> str:
 # 4. TEST RUN
 # ==========================================
 
-def run_agent(input_text: str) -> str:
+def run_command_agent(input_text: str) -> str:
     """
     Runs the Needle agent with the given input text.
     This function is designed to be imported and used from other files.
@@ -451,10 +451,10 @@ def run_agent(input_text: str) -> str:
 
 if __name__ == "__main__":
     # Test 1: Just the app
-    # print(run_agent("open telegram"))
+    # print(run_command_agent("open telegram"))
 
     # Test 2: App with folder tag (Sublime + folder)
-    # print(run_agent("open sublime with my video project"))
+    # print(run_command_agent("open sublime with my video project"))
 
     # Test 3: Files app with downloads
-    print(run_agent("open terminal in remotion folder"))
+    print(run_command_agent("open terminal in remotion folder"))
