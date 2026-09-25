@@ -24,7 +24,7 @@ ollama_client = AsyncOpenAI(
 set_tracing_disabled(True)
 
 ollama_model = OpenAIChatCompletionsModel(
-    model="gemma3:270m",
+    model="qwen3:0.6b",
     openai_client=ollama_client,
 )
 
@@ -79,14 +79,14 @@ def decision_agent(state: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# 3. Agent: The CLI Formatter / Tool Agent
+# 3. Agent Definitions
 # ---------------------------------------------------------------------------
 formatter_agent = Agent(
-    name="FromatterAgent",
+    name="FormatterAgent",
     model=ollama_model,
     instructions=(
         "You are a formatting agent. Given an incoming query, make sure "
-        "it is a clean, single-line, ready for the assitant to excute it. Output ONLY the raw query."
+        "it is a clean, single-line, ready for the assistant to execute it. Output ONLY the raw query."
     ),
 )
 
@@ -94,8 +94,11 @@ reply_agent = Agent(
     name="ReplyAgent",
     model=ollama_model,
     instructions=(
-        "you are constructing the final reply to the user "
-        "Use the the query and the tools calls to till the suer if what he asked for is done or failed."
+        "You are constructing the final response to the user.\n"
+        "You will receive the user's initial query and the execution results from tools.\n"
+        "Write a concise, friendly, and natural sentence confirming if the action succeeded or failed "
+        "(e.g., 'Done! I opened the terminal in the remotion folder for you.' or 'Sorry, I couldn't open the terminal.'). "
+        "Do not output raw logs or technical code paths unless necessary."
     ),
 )
 
@@ -158,7 +161,6 @@ async def run_workflow(user_query: str, max_retries: int = 3):
     print(f"User Request: '{user_query}'")
     print(f"==========================================")
 
-    # Initial state representing the turn
     current_state = f'The user send a query "{user_query}"'
     last_output = None
 
@@ -168,26 +170,23 @@ async def run_workflow(user_query: str, max_retries: int = 3):
         print(f"\n--- Turn {attempt}: Evaluating State via Decision Endpoint ---")
         print(f"[Current State]: {current_state}")
 
-        # The curl subprocess evaluates the state
         decision = decision_agent(current_state)
         print(f"[Decision Output]: {decision}")
 
-        # CASE 1: Evaluator decides to reply to the user (done or no tool required)
+        # CASE 1: Evaluator decides to reply to the user
         if decision == "Reply to the user":
-            if last_output is not None:
-                print(f"[Final Result to User]:\n{last_output}")
-                return last_output
-            else:
-                print("[Decision]: No tool needed. Direct reply.")
-                return f"Response to: {user_query}"
+            prompt = (
+                f"User Query: {user_query}\n"
+                f"Tool Execution Output: {last_output if last_output else 'No tool was needed. REPLY NOW'}"
+            )
+            reply_response = await Runner.run(reply_agent, input=prompt)
+            final_message = reply_response.final_output.strip()
+
+            print(f"\n[Final Result to User]:\n{final_message}")
+            return final_message
 
         # CASE 2: Tool execution is requested (Use Tool, Retry, or Continue)
         if decision in ("Use Tool", "Retry", "Continue"):
-            # Clarify/format the query with the CLI Clarifier agent
-            # clarified_result = await Runner.run(formatter_agent, input=user_query)
-            # clean_command = clarified_result.final_output.strip().strip("`")
-
-            # Execute the command
             cli_result = run_assistant(user_query)
             last_output = cli_result["output"] if cli_result["status"] == "success" else cli_result["error"]
 
@@ -197,6 +196,14 @@ async def run_workflow(user_query: str, max_retries: int = 3):
             )
 
     print("\n[Terminated]: Exceeded maximum retry attempts.")
+    # Fallback response via reply_agent if attempts run out
+    fallback_prompt = (
+        f"User Query: {user_query}\n"
+        f"Tool Execution Output: Failed or timed out after {max_retries} attempts. Last output: {last_output}"
+    )
+    fallback_reply = await Runner.run(reply_agent, input=fallback_prompt)
+    print(f"[Final Result to User]:\n{fallback_reply.final_output.strip()}")
+    return fallback_reply.final_output.strip()
 
 
 # ---------------------------------------------------------------------------
