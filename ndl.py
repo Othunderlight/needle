@@ -153,7 +153,7 @@ APPS_DATABASE = {
     },
     # --- Terminals ---
     "ptyxis": {
-        "commands": ["ptyxis"],
+        "commands": ["ptyxis --new-window"],
         "aliases": ["terminal"],
         "category": "terminal-emulator",
     },
@@ -434,13 +434,27 @@ def _launch_with_fallback(app_key: str, path_arg: str = None) -> str:
 # 4. TEST RUN
 # ==========================================
 
-agent = needle.Needle(tools=[open_app])
+def run_agent(input_text: str) -> str:
+    """
+    Runs the Needle agent with the given input text.
+    This function is designed to be imported and used from other files.
 
-# Test 1: Just the app
-# print(agent.run("open telegram")["results"])
+    Args:
+        input_text: The user input string to process.
 
-# Test 2: App with folder tag (Sublime + folder)
-# print(agent.run("open sublime with my video project")["results"])
+    Returns:
+        The result string from the agent execution.
+    """
+    agent = needle.Needle(tools=[open_app])
+    return agent.run(input_text)
 
-# Test 3: Files app with downloads
-print(agent.run("open opencode in remotion folder")["results"])
+
+if __name__ == "__main__":
+    # Test 1: Just the app
+    # print(run_agent("open telegram"))
+
+    # Test 2: App with folder tag (Sublime + folder)
+    # print(run_agent("open sublime with my video project"))
+
+    # Test 3: Files app with downloads
+    print(run_agent("open terminal in remotion folder"))
