@@ -85,9 +85,9 @@ formatter_agent = Agent(
     name="FormatterAgent",
     model=ollama_model,
     instructions=(
-        "You are a query formatter. Given a user request, reformat it into a concise, "
-        "direct action request ready for tool execution. "
-        "Do NOT include explanations, markdown, or quotes. Output ONLY the clean single-line action request."
+        "you are a stripper agent. Given the following text, remove any unnecessary info/words from it"
+        # "direct action-first text ready for tool agent to understand and call the propper tools. "
+        "Do NOT include explanations, markdown, or quotes. Output ONLY the clean single-line action text."
     ),
 )
 
@@ -171,7 +171,15 @@ async def run_workflow(user_query: str, max_retries: int = 3):
         print(f"\n--- Turn {attempt}: Evaluating State via Decision Endpoint ---")
         print(f"[Current State]: {current_state}")
 
-        decision = decision_agent(current_state)
+        formatter_result = await Runner.run(formatter_agent, input=current_state)
+        formatted_current_state = (
+            formatter_result.final_output.strip()
+            .strip("`")
+            .strip('"')
+            .strip("'")
+        )
+        print(f"  [formatted current state]: '{formatted_current_state}'")
+        decision = decision_agent(formatted_current_state)
         print(f"[Decision Output]: {decision}")
 
         # CASE 1: Evaluator decides to reply to the user
