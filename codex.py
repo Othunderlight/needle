@@ -117,9 +117,8 @@ formatter_agent = Agent(
     name="FormatterAgent",
     model=ollama_model,
     instructions=(
-        "You are a command cleaning agent. Given the user's input, extract only "
-        "the direct action command suitable for tool execution. "
-        "Do NOT include explanations, markdown, or quotes. Output ONLY the clean action text."
+        "You are stripper agent, your job is to strip out any unnecessary info or words.\n"
+        "Do NOT include explanations, markdown, or quotes or any non text char. Output ONLY the clean action text."
     ),
 )
 
@@ -129,7 +128,7 @@ reply_agent = Agent(
     instructions=(
         "You formulate the final response to the user based STRICTLY on the tool execution output.\n"
         "- If Tool Output is 'No tool called' or describes a failure, tell the user honestly that the action was not performed or failed.\n"
-        "- NEVER claim that you opened or performed something unless Tool Output explicitly confirms success (e.g. '✅').\n"
+        "- NEVER claim that you opened or performed something unless Tool Output explicitly confirms success.\n"
         "- Keep the answer concise, friendly, and natural."
     ),
 )
