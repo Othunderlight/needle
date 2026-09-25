@@ -141,7 +141,7 @@ APPS_DATABASE = {
         "category": "agent",
         "aliases": ["codex", "openai codex"],
         "prefix": default_terminal,
-        "commands": ["ptyxis && codex", "codex app"],
+        "commands": ["codex", "codex app"],
         "path_args": ["--cd"],
 
     },
@@ -154,6 +154,7 @@ APPS_DATABASE = {
     # --- Terminals ---
     "ptyxis": {
         "commands": ["ptyxis --new-window"],
+        "path_args": ["-d"],
         "aliases": ["terminal"],
         "category": "terminal-emulator",
     },
@@ -462,4 +463,4 @@ if __name__ == "__main__":
     # print(run_command_agent("open sublime with my video project"))
 
     # Test 3: Files app with downloads
-    print(run_command_agent("open terminal in remotion folder and then open the files there as well"))
+    print(run_command_agent("open codex in remotion folder"))
