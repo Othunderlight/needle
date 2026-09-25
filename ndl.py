@@ -462,4 +462,4 @@ if __name__ == "__main__":
     # print(run_command_agent("open sublime with my video project"))
 
     # Test 3: Files app with downloads
-    print(run_command_agent("open terminal in remotion folder"))
+    print(run_command_agent("open terminal in remotion folder and then open the files there as well"))

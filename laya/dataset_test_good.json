@@ -1,0 +1,1300 @@
+[
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "launch code editor in remotion"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "launch code editor in remotion",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "Opened subl at /home/omar/content/remotion (PID 31082)"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "how do I configure multi-cursor editing in sublime text?"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "open brave browser navigating to https://github.com",
+      "last_output": {
+        "success": false,
+        "error": "Failed to create socket to Wayland compositor: Connection reset by peer",
+        "results": []
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "retry"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "open brave browser navigating to https://github.com",
+      "last_output": {
+        "success": false,
+        "error": "Failed to create socket to Wayland compositor: Connection reset by peer",
+        "results": []
+      },
+      "retries_so_far": 1,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "open explorer in my desktop"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "open explorer in my desktop",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "Successfully executed `nautilus /home/omar/Desktop`"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "initialize local git repository in remotion template directory",
+      "last_output": {
+        "success": true,
+        "error": "hint: Using 'main' as the name for the initial branch.",
+        "results": [
+          "Initialized empty Git repository in /home/omar/content/remotion/.git/"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "continue"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "bring up localhost tunnel on 5173"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "bring up localhost tunnel on 5173",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "Tunnel session active: https://a14b-84-11-2.ngrok-free.app -> http://localhost:5173"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "connect to proton vpn",
+      "last_output": {
+        "success": false,
+        "error": "org.freedesktop.DBus.Error.NoReply: Did not receive reply within 10000ms",
+        "results": []
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "retry"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "connect to proton vpn",
+      "last_output": {
+        "success": false,
+        "error": "org.freedesktop.DBus.Error.NoReply: Did not receive reply within 10000ms",
+        "results": []
+      },
+      "retries_so_far": 2,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "what is the syntax for declaring an interface in typescript?"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "launch streaming software"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "launch streaming software",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "Launched OBS Studio via flatpak run com.obsproject.Studio"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "open terminal editor in downloads"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "open terminal editor in downloads",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "Executed `ptyxis --new-window -e nvim /home/omar/Downloads`"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "what is the command to inspect HTTP response headers in postman?"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "open tg desktop",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "Running: flatpak run org.telegram.desktop (PID 2894)"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "open tg"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "launch google chrome to inspect local dashboard",
+      "last_output": {
+        "success": false,
+        "error": "Cannot open display :0: X11 connection rejected because of wrong authentication",
+        "results": []
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "retry"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "launch google chrome to inspect local dashboard",
+      "last_output": {
+        "success": false,
+        "error": "Cannot open display :0: X11 connection rejected because of wrong authentication",
+        "results": []
+      },
+      "retries_so_far": 1,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "start open code in quiet mode"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "start open code in quiet mode",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "Spawned: `ptyxis --new-window -e opencode -q`"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "can wezterm render ligatures with Fira Code?"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "open wez in content folder"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "open wez in content folder",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "wezterm start --cwd /home/omar/content started"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "run npm build inside remotion workspace",
+      "last_output": {
+        "success": true,
+        "error": "[webpack] Notice: Bundle size exceeds 500kb recommendation",
+        "results": [
+          "Compiled bundle successfully in 4120ms (out/index.html created)"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "continue"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "launch gnome extensions"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "launch gnome extensions",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "flatpak run com.mattjakeman.ExtensionManager launched"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "can I use wireguard protocol inside protonvpn cli?"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "open files in ai vedio editing"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "open files in ai vedio editing",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "Opened /home/omar/content with nautilus"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "check if ptyxis binary exists in PATH",
+      "last_output": {
+        "success": false,
+        "error": "which: no ptyxis in (/usr/bin:/bin)",
+        "results": []
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "open openai codex in home folder"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "open openai codex in home folder",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "Launched `ptyxis --new-window --cd=/home/omar && codex`"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "launch recorder"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "launch recorder",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "Opened Kooha recorder"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "launch ngrok http 3000 in terminal",
+      "last_output": {
+        "success": false,
+        "error": "Failed to bind tunnel: port 3000 already bound or socket in use",
+        "results": []
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "how do I pass props into a remotion sequence component?"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "start api tester"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "start api tester",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "Postman desktop client started"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "fetch notion workspace updates via desktop sync",
+      "last_output": {
+        "success": false,
+        "error": "HTTP 503: Service Temporarily Unavailable. Notion servers undergoing scheduled maintenance.",
+        "results": []
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "retry"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "fetch notion workspace updates via desktop sync",
+      "last_output": {
+        "success": false,
+        "error": "HTTP 503: Service Temporarily Unavailable. Notion servers undergoing scheduled maintenance.",
+        "results": []
+      },
+      "retries_so_far": 1,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "open terminal in video project"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "open terminal in video project",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "Executed: `ptyxis --new-window /home/omar/Videos`"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "launch notion desktop"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "launch notion desktop",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "notion-desktop running (PID 32910)"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  },
+  {
+    "state": {
+      "last_msg": null,
+      "last_output": null,
+      "retries_so_far": 0,
+      "new_user_message": "open file manager in main folder"
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "use_tool"
+    }
+  },
+  {
+    "state": {
+      "last_msg": "open file manager in main folder",
+      "last_output": {
+        "success": true,
+        "error": null,
+        "results": [
+          "nautilus /home/omar spawned"
+        ]
+      },
+      "retries_so_far": 0,
+      "new_user_message": null
+    },
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "What Should the agent do next?",
+        "criteria": {
+          "retry": "Run the previous command or tool attempt again.",
+          "continue": "Proceed to the next step without retrying.",
+          "reply_user": "Stop execution, report the result back to the user or request assistance, or clarification from the user.",
+          "use_tool": "pass the query to the tools agent."
+        }
+      }
+    },
+    "expected": {
+      "action": "reply_user"
+    }
+  }
+]
