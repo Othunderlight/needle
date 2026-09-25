@@ -82,11 +82,20 @@ def decision_agent(state: str) -> str:
 # 3. Agent: The CLI Formatter / Tool Agent
 # ---------------------------------------------------------------------------
 formatter_agent = Agent(
-    name="CLIClarifierAgent",
+    name="FromatterAgent",
     model=ollama_model,
     instructions=(
         "You are a formatting agent. Given an incoming query, make sure "
         "it is a clean, single-line, ready for the assitant to excute it. Output ONLY the raw query."
+    ),
+)
+
+reply_agent = Agent(
+    name="ReplyAgent",
+    model=ollama_model,
+    instructions=(
+        "you are constructing the final reply to the user "
+        "Use the the query and the tools calls to till the suer if what he asked for is done or failed."
     ),
 )
 
@@ -175,11 +184,11 @@ async def run_workflow(user_query: str, max_retries: int = 3):
         # CASE 2: Tool execution is requested (Use Tool, Retry, or Continue)
         if decision in ("Use Tool", "Retry", "Continue"):
             # Clarify/format the query with the CLI Clarifier agent
-            clarified_result = await Runner.run(formatter_agent, input=user_query)
-            clean_command = clarified_result.final_output.strip().strip("`")
+            # clarified_result = await Runner.run(formatter_agent, input=user_query)
+            # clean_command = clarified_result.final_output.strip().strip("`")
 
             # Execute the command
-            cli_result = run_assistant(clean_command)
+            cli_result = run_assistant(user_query)
             last_output = cli_result["output"] if cli_result["status"] == "success" else cli_result["error"]
 
             # Update the state string to feed into the next decision turn
