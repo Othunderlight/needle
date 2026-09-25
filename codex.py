@@ -85,8 +85,9 @@ formatter_agent = Agent(
     name="FormatterAgent",
     model=ollama_model,
     instructions=(
-        "You are a formatting agent. Given an incoming query, make sure "
-        "it is a clean, single-line, ready for the assistant to execute it. Output ONLY the raw query."
+        "You are a query formatter. Given a user request, reformat it into a concise, "
+        "direct action request ready for tool execution. "
+        "Do NOT include explanations, markdown, or quotes. Output ONLY the clean single-line action request."
     ),
 )
 
@@ -187,16 +188,26 @@ async def run_workflow(user_query: str, max_retries: int = 3):
 
         # CASE 2: Tool execution is requested (Use Tool, Retry, or Continue)
         if decision in ("Use Tool", "Retry", "Continue"):
-            cli_result = run_assistant(user_query)
+            # 1. Reformat the query with the FormatterAgent
+            formatter_result = await Runner.run(formatter_agent, input=user_query)
+            formatted_command = (
+                formatter_result.final_output.strip()
+                .strip("`")
+                .strip('"')
+                .strip("'")
+            )
+            print(f"  [Formatted Command]: '{formatted_command}'")
+
+            # 2. Execute the cleaned command
+            cli_result = run_assistant(formatted_command)
             last_output = cli_result["output"] if cli_result["status"] == "success" else cli_result["error"]
 
-            # Update the state string to feed into the next decision turn
+            # 3. Update the state string to feed into the next decision turn
             current_state = (
                 f'The user send a query "{user_query}", a tool was called and the output was "{last_output}"'
             )
 
     print("\n[Terminated]: Exceeded maximum retry attempts.")
-    # Fallback response via reply_agent if attempts run out
     fallback_prompt = (
         f"User Query: {user_query}\n"
         f"Tool Execution Output: Failed or timed out after {max_retries} attempts. Last output: {last_output}"
@@ -210,7 +221,7 @@ async def run_workflow(user_query: str, max_retries: int = 3):
 # 5. Run Workflow
 # ---------------------------------------------------------------------------
 async def main():
-    await run_workflow("open terminal in remotion folder")
+    await run_workflow("man... open terminal in remotion folder")
 
 
 if __name__ == "__main__":
