@@ -2,8 +2,9 @@ import subprocess
 import time
 import uuid
 from typing import Any, List, Optional, Union
-from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi import FastAPI, HTTPException, BackgroundTasks, Request
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 from pydantic import BaseModel, Field
 import uvicorn
 
@@ -21,6 +22,24 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class RawRequestLogger(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        if request.url.path.startswith("/v1") or request.url.path.startswith("/chat"):
+            try:
+                body_bytes = await request.body()
+                print(f"[RAW REQUEST] {request.method} {request.url.path}")
+                print(f"[RAW BODY] {body_bytes.decode('utf-8', errors='replace')}")
+                print(f"[RAW HEADERS] {dict(request.headers)}")
+                print("---")
+            except Exception as e:
+                print(f"[ERROR reading raw request] {e}")
+        response = await call_next(request)
+        return response
+
+
+app.add_middleware(RawRequestLogger)
 
 
 # ---------------------------------------------------------------------------
@@ -108,6 +127,8 @@ async def chat_completions(
     req: ChatCompletionRequest,
     background_tasks: BackgroundTasks,  # <-- Injected by FastAPI
 ):
+    print(f"[DEBUG] Request body: model={req.model}, messages_count={len(req.messages)}, stream={req.stream}")
+    print(f"[DEBUG] Messages: {req.messages}")
     if req.stream:
         raise HTTPException(status_code=400, detail="Streaming is not supported.")
 
