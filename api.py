@@ -58,7 +58,7 @@ def play_voice(message: str) -> None:
 # ---------------------------------------------------------------------------
 class ChatMessage(BaseModel):
     role: str
-    content: Union[str, List[dict[str, Any]]]
+    content: Optional[Union[str, List[dict[str, Any]]]] = None
 
 
 class ChatCompletionRequest(BaseModel):
@@ -96,8 +96,9 @@ class ChatCompletionResponse(BaseModel):
 
 
 def extract_last_user_message(messages: List[ChatMessage]) -> str:
+    # Find the last user message (ignore system, assistant, and everything else)
     for msg in reversed(messages):
-        if msg.role.lower() == "user":
+        if msg.role.lower() == "user" and msg.content is not None:
             if isinstance(msg.content, str):
                 return msg.content.strip()
             elif isinstance(msg.content, list):
@@ -128,23 +129,6 @@ async def chat_completions(
     req: ChatCompletionRequest,
     background_tasks: BackgroundTasks,  # <-- Injected by FastAPI
 ):
-    # Debug: show what we received
-    print(f"[DEBUG] Request body: model={req.model}, messages_count={len(req.messages)}, stream={req.stream}")
-    print(f"[DEBUG] Messages: {req.messages}")
-
-    # Strip out everything except user messages (ignore system, tools, etc.)
-    # Convert to OpenAI-compatible format
-    filtered_messages = [
-        {"role": "user", "content": str(msg.content)}
-        for msg in req.messages
-        if msg.role.lower() == "user"
-    ]
-
-    print(f"[DEBUG] Filtered messages: {filtered_messages}")
-
-    if not filtered_messages:
-        raise HTTPException(status_code=400, detail="No user messages in request")
-
     user_query = extract_last_user_message(req.messages)
     if not user_query:
         raise HTTPException(status_code=400, detail="No user message provided.")

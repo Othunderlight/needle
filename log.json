@@ -644,5 +644,295 @@
         "output": "The content folder is not installed. The action was unsuccessful."
       }
     ]
+  },
+  {
+    "run_id": "83e0c620-34bb-46e2-9107-69105a8a204b",
+    "timestamp": "2026-09-25T17:39:23.140122+00:00",
+    "user_query": "Hi, how are you?",
+    "cleaned_command": "Hi, how are you?",
+    "total_duration_sec": 3.9658,
+    "final_output": "No tool called. The response was not performed as requested.",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 2.2039,
+        "input": "Hi, how are you?",
+        "output": "Hi, how are you?"
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 0.6844,
+        "input_state": "The user sent a query: \"Hi, how are you?\". Status: No tool called yet.",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 105.06,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0,
+                  "Reply to the user": 1,
+                  "Use Tool": 0
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 359,
+              "outputTokens": 52,
+              "totalTokens": 411
+            },
+            "confidence": {
+              "decision": 1
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 1,
+        "duration_sec": 1.0772,
+        "prompt": "User Query: Hi, how are you?\nTool Output: No tool called",
+        "output": "No tool called. The response was not performed as requested."
+      }
+    ]
+  },
+  {
+    "run_id": "d2696546-2dd1-462b-ab20-337a470fadad",
+    "timestamp": "2026-09-25T17:40:01.554666+00:00",
+    "user_query": "Hi, what is artificial intelligence? Answer me now.",
+    "cleaned_command": "Artificial intelligence is a field of study that explores how machines can learn, reason, and make decisions.",
+    "total_duration_sec": 3.0928,
+    "final_output": "The tool was not called successfully. Let me provide the answer to your question: Artificial intelligence is a technology that allows machines to think and learn like humans.",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 1.0944,
+        "input": "Hi, what is artificial intelligence? Answer me now.",
+        "output": "Artificial intelligence is a field of study that explores how machines can learn, reason, and make decisions."
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 0.7377,
+        "input_state": "The user sent a query: \"Artificial intelligence is a field of study that explores how machines can learn, reason, and make decisions.\". Status: No tool called yet.",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 110.91,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.13,
+                  "Reply to the user": 0.86,
+                  "Use Tool": 0.01
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 375,
+              "outputTokens": 52,
+              "totalTokens": 427
+            },
+            "confidence": {
+              "decision": 0.81
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 1,
+        "duration_sec": 1.2605,
+        "prompt": "User Query: Hi, what is artificial intelligence? Answer me now.\nTool Output: No tool called",
+        "output": "The tool was not called successfully. Let me provide the answer to your question: Artificial intelligence is a technology that allows machines to think and learn like humans."
+      }
+    ]
+  },
+  {
+    "run_id": "0fbbb1f9-748e-433d-a759-2defec3bbe14",
+    "timestamp": "2026-09-25T17:40:46.934890+00:00",
+    "user_query": "What is a oy? Answer me now.",
+    "cleaned_command": "In spoken English, \"oy\" is an informal way to say \"yes\" or \"okay.\" It's commonly used in casual settings. If you're asking about a different context, please clarify!",
+    "total_duration_sec": 4.0542,
+    "final_output": "The tool output indicates a failure. Please try again.",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 2.1654,
+        "input": "What is a oy? Answer me now.",
+        "output": "In spoken English, \"oy\" is an informal way to say \"yes\" or \"okay.\" It's commonly used in casual settings. If you're asking about a different context, please clarify!"
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 0.8639,
+        "input_state": "The user sent a query: \"In spoken English, \"oy\" is an informal way to say \"yes\" or \"okay.\" It's commonly used in casual settings. If you're asking about a different context, please clarify!\". Status: No tool called yet.",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 236.11,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.18,
+                  "Reply to the user": 0.79,
+                  "Use Tool": 0.03
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 393,
+              "outputTokens": 52,
+              "totalTokens": 445
+            },
+            "confidence": {
+              "decision": 0.72
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 1,
+        "duration_sec": 1.0247,
+        "prompt": "User Query: What is a oy? Answer me now.\nTool Output: No tool called",
+        "output": "The tool output indicates a failure. Please try again."
+      }
+    ]
+  },
+  {
+    "run_id": "e91a4c31-f6b8-4c9c-8b97-41087db8a611",
+    "timestamp": "2026-09-25T17:42:39.769070+00:00",
+    "user_query": "Hoi, how are you?",
+    "cleaned_command": "hi there",
+    "total_duration_sec": 4.1077,
+    "final_output": "The action was not performed. The tool output indicates a failure. Let me know if there's anything else I can help with!",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 1.9498,
+        "input": "Hoi, how are you?",
+        "output": "hi there"
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 0.7291,
+        "input_state": "The user sent a query: \"hi there\". Status: No tool called yet.",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 100.91,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0,
+                  "Reply to the user": 1,
+                  "Use Tool": 0
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 356,
+              "outputTokens": 52,
+              "totalTokens": 408
+            },
+            "confidence": {
+              "decision": 1
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 1,
+        "duration_sec": 1.4286,
+        "prompt": "User Query: Hoi, how are you?\nTool Output: No tool called",
+        "output": "The action was not performed. The tool output indicates a failure. Let me know if there's anything else I can help with!"
+      }
+    ]
+  },
+  {
+    "run_id": "b02d3e2d-54df-4c91-b084-6e324a51883b",
+    "timestamp": "2026-09-25T17:43:09.329156+00:00",
+    "user_query": "What do you think about a oil? Answer me in the three words only.",
+    "cleaned_command": "oil is good",
+    "total_duration_sec": 4.1101,
+    "final_output": "Oil is good.",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 2.4672,
+        "input": "What do you think about a oil? Answer me in the three words only.",
+        "output": "oil is good"
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 0.6409,
+        "input_state": "The user sent a query: \"oil is good\". Status: No tool called yet.",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 113.16,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.03,
+                  "Reply to the user": 0.93,
+                  "Use Tool": 0.04
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 357,
+              "outputTokens": 52,
+              "totalTokens": 409
+            },
+            "confidence": {
+              "decision": 0.9
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 1,
+        "duration_sec": 1.0018,
+        "prompt": "User Query: What do you think about a oil? Answer me in the three words only.\nTool Output: No tool called",
+        "output": "Oil is good."
+      }
+    ]
   }
 ]
