@@ -3,6 +3,7 @@ import time
 import uuid
 from typing import Any, List, Optional, Union
 from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import uvicorn
 
@@ -11,6 +12,15 @@ import uvicorn
 from codex import run_workflow
 
 app = FastAPI(title="OpenAI-Compatible Agent Workflow API", version="1.0.0")
+
+# Allow all origins and methods (including OPTIONS preflight)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # ---------------------------------------------------------------------------
