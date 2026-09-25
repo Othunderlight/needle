@@ -1,7 +1,8 @@
+import subprocess
 import time
 import uuid
 from typing import Any, List, Optional, Union
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, BackgroundTasks
 from pydantic import BaseModel, Field
 import uvicorn
 
@@ -10,6 +11,17 @@ import uvicorn
 from codex import run_workflow
 
 app = FastAPI(title="OpenAI-Compatible Agent Workflow API", version="1.0.0")
+
+
+# ---------------------------------------------------------------------------
+# Background Voice Task
+# ---------------------------------------------------------------------------
+def play_voice(message: str) -> None:
+    """Runs in the background after the HTTP response has already been sent."""
+    try:
+        subprocess.run(["./say_kitten.sh", message], check=True, capture_output=True)
+    except (subprocess.CalledProcessError, FileNotFoundError) as e:
+        print(f"[Voice Error]: Failed to run say_kitten.sh: {e}")
 
 
 # ---------------------------------------------------------------------------
@@ -53,21 +65,17 @@ class ChatCompletionResponse(BaseModel):
     usage: Usage
 
 
-# ---------------------------------------------------------------------------
-# Helper: Extract User Prompt
-# ---------------------------------------------------------------------------
 def extract_last_user_message(messages: List[ChatMessage]) -> str:
-    """Finds and extracts the text from the latest user message."""
     for msg in reversed(messages):
         if msg.role.lower() == "user":
             if isinstance(msg.content, str):
                 return msg.content.strip()
             elif isinstance(msg.content, list):
-                # Handle OpenAI multi-part / multimodal text blocks
-                parts = []
-                for part in msg.content:
-                    if isinstance(part, dict) and part.get("type") == "text":
-                        parts.append(part.get("text", ""))
+                parts = [
+                    part.get("text", "")
+                    for part in msg.content
+                    if isinstance(part, dict) and part.get("type") == "text"
+                ]
                 return " ".join(parts).strip()
     return ""
 
@@ -78,54 +86,40 @@ def extract_last_user_message(messages: List[ChatMessage]) -> str:
 @app.get("/v1/models")
 @app.get("/models")
 async def list_models():
-    """Satisfies standard OpenAI client discovery checks."""
     return {
         "object": "list",
-        "data": [
-            {
-                "id": "agent-workflow",
-                "object": "model",
-                "created": int(time.time()),
-                "owned_by": "custom",
-            }
-        ],
+        "data": [{"id": "agent-workflow", "object": "model", "created": int(time.time()), "owned_by": "custom"}],
     }
 
 
 @app.post("/v1/chat/completions", response_model=ChatCompletionResponse)
 @app.post("/chat/completions", response_model=ChatCompletionResponse)
-async def chat_completions(req: ChatCompletionRequest):
+async def chat_completions(
+    req: ChatCompletionRequest,
+    background_tasks: BackgroundTasks,  # <-- Injected by FastAPI
+):
     if req.stream:
-        raise HTTPException(
-            status_code=400,
-            detail="Streaming is not supported for this multi-step agent workflow.",
-        )
+        raise HTTPException(status_code=400, detail="Streaming is not supported.")
 
     user_query = extract_last_user_message(req.messages)
     if not user_query:
-        raise HTTPException(
-            status_code=400,
-            detail="No valid user message found in the 'messages' array.",
-        )
+        raise HTTPException(status_code=400, detail="No user message provided.")
 
     try:
-        # Run your existing agent workflow
         final_answer = await run_workflow(
             user_query=user_query,
             max_retries=req.max_retries or 3,
         )
     except Exception as exc:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Agent workflow error: {str(exc)}",
-        )
+        raise HTTPException(status_code=500, detail=f"Agent workflow error: {str(exc)}")
 
-    completion_id = f"chatcmpl-{uuid.uuid4().hex}"
-    created_time = int(time.time())
+    # Enqueue TTS to run in the background right after sending the response
+    if final_answer:
+        background_tasks.add_task(play_voice, final_answer)
 
     return ChatCompletionResponse(
-        id=completion_id,
-        created=created_time,
+        id=f"chatcmpl-{uuid.uuid4().hex}",
+        created=int(time.time()),
         model=req.model,
         choices=[
             Choice(
