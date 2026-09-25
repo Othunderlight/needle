@@ -1,17 +1,45 @@
 import asyncio
+from datetime import datetime, timezone
 import json
+import os
 import subprocess
+import time
 from typing import Any
-from openai import AsyncOpenAI
+import uuid
+
 from ndl import run_command_agent
+from openai import AsyncOpenAI
 
 # Core primitives from the OpenAI Agents SDK
 from agents import (
     Agent,
-    Runner,
     OpenAIChatCompletionsModel,
+    Runner,
     set_tracing_disabled,
 )
+
+# ---------------------------------------------------------------------------
+# 0. Helper: Log Storage
+# ---------------------------------------------------------------------------
+LOG_FILE = "log.json"
+
+
+def save_run_log(run_record: dict[str, Any], filepath: str = LOG_FILE) -> None:
+    """Appends a run record safely to the target JSON log file."""
+    logs = []
+    if os.path.exists(filepath):
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                content = json.load(f)
+                logs = content if isinstance(content, list) else [content]
+        except Exception:
+            logs = []
+
+    logs.append(run_record)
+
+    with open(filepath, "w", encoding="utf-8") as f:
+        json.dump(logs, f, indent=2, ensure_ascii=False)
+
 
 # ---------------------------------------------------------------------------
 # 1. Connect to Local Ollama
@@ -31,12 +59,13 @@ ollama_model = OpenAIChatCompletionsModel(
 # ---------------------------------------------------------------------------
 # 2. Decision Maker: Subprocess Curl Endpoint
 # ---------------------------------------------------------------------------
-def decision_agent(state: str) -> str:
+def decision_agent(state: str) -> tuple[str, dict[str, Any], float]:
     """
-    Acts as the Decision Agent by calling the JEV evaluation endpoint via curl.
-    Takes `state` as input and returns the decision choice:
-    ('Use Tool', 'Reply to the user', 'Retry', 'Continue').
+    Calls the JEV evaluation endpoint via curl.
+    Returns:
+        (decision_choice, full_raw_response_json, elapsed_duration_seconds)
     """
+    t0 = time.perf_counter()
     payload = {
         "state": state,
         "questions": {
@@ -74,8 +103,11 @@ def decision_agent(state: str) -> str:
     ]
 
     res = subprocess.run(curl_cmd, capture_output=True, text=True, check=True)
-    data = json.loads(res.stdout)
-    return data["result"]["answers"]["decision"]["choice"]
+    duration = round(time.perf_counter() - t0, 4)
+
+    raw_data = json.loads(res.stdout)
+    choice = raw_data["result"]["answers"]["decision"]["choice"]
+    return choice, raw_data, duration
 
 
 # ---------------------------------------------------------------------------
@@ -104,9 +136,7 @@ reply_agent = Agent(
 
 
 def run_assistant(command: str) -> dict[str, Any]:
-    """
-    Executes a query via ndl.run_command_agent (needle) and parses results safely.
-    """
+    """Executes a query via ndl.run_command_agent and parses results safely."""
     print(f"  [CLI Executing]: {command}")
     try:
         result = run_command_agent(command)
@@ -118,7 +148,6 @@ def run_assistant(command: str) -> dict[str, Any]:
             "exit_code": -1,
         }
 
-    # Handle explicit error return
     if not isinstance(result, dict) or result.get("success") is False:
         err_msg = (
             result.get("error")
@@ -147,8 +176,6 @@ def run_assistant(command: str) -> dict[str, Any]:
         }
 
     last_entry = results[-1]
-
-    # Extract string output from dict or primitive
     if isinstance(last_entry, dict):
         if last_entry.get("error"):
             return {
@@ -161,7 +188,6 @@ def run_assistant(command: str) -> dict[str, Any]:
     else:
         output_str = str(last_entry)
 
-    # Check for CLI failure markers
     if output_str.lstrip().startswith("❌"):
         return {"status": "error", "output": "", "error": output_str, "exit_code": 1}
 
@@ -169,85 +195,161 @@ def run_assistant(command: str) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# 4. Orchestration Loop using the Curl Evaluator
+# 4. Orchestration Loop with Timing & Logging
 # ---------------------------------------------------------------------------
 async def run_workflow(user_query: str, max_retries: int = 3):
+    run_id = str(uuid.uuid4())
+    workflow_start_time = time.perf_counter()
+    timestamp_iso = datetime.now(timezone.utc).isoformat()
+
+    log_entry: dict[str, Any] = {
+        "run_id": run_id,
+        "timestamp": timestamp_iso,
+        "user_query": user_query,
+        "cleaned_command": None,
+        "total_duration_sec": 0.0,
+        "final_output": None,
+        "steps": [],
+    }
+
     print(f"\n==========================================")
+    print(f"Run ID: {run_id}")
     print(f"User Request: '{user_query}'")
     print(f"==========================================")
 
-    # 1. Clean the user query for CLI tool consumption
-    formatter_result = await Runner.run(formatter_agent, input=user_query)
-    cleaned_command = (
-        formatter_result.final_output.strip()
-        .strip("`")
-        .strip('"')
-        .strip("'")
-    )
-    if not cleaned_command:
-        cleaned_command = user_query
+    try:
+        # 1. Clean the user query for CLI tool consumption
+        t0_fmt = time.perf_counter()
+        formatter_result = await Runner.run(formatter_agent, input=user_query)
+        fmt_duration = round(time.perf_counter() - t0_fmt, 4)
 
-    print(f"[Cleaned Command for Tools]: '{cleaned_command}'")
+        cleaned_command = (
+            formatter_result.final_output.strip()
+            .strip("`")
+            .strip('"')
+            .strip("'")
+        )
+        if not cleaned_command:
+            cleaned_command = user_query
 
-    # Initial state explicitly informs evaluator that no tool has been run yet
-    current_state = f'The user sent a query: "{cleaned_command}". Status: No tool called yet.'
-    last_output: str | None = None
+        log_entry["cleaned_command"] = cleaned_command
+        log_entry["steps"].append({
+            "step": "formatter_agent",
+            "duration_sec": fmt_duration,
+            "input": user_query,
+            "output": cleaned_command,
+        })
 
-    attempt = 0
-    while attempt < max_retries:
-        attempt += 1
-        print(f"\n--- Turn {attempt}: Evaluating State via Decision Endpoint ---")
-        print(f"[Current State]: {current_state}")
+        print(f"[Cleaned Command for Tools]: '{cleaned_command}' ({fmt_duration}s)")
 
-        decision = decision_agent(current_state)
-        print(f"[Decision Output]: {decision}")
+        # Initial state
+        current_state = f'The user sent a query: "{cleaned_command}". Status: No tool called yet.'
+        last_output: str | None = None
 
-        # CASE 1: Evaluator decides to reply to the user
-        if decision == "Reply to the user":
-            tool_output_value = last_output if last_output else "No tool called"
+        attempt = 0
+        while attempt < max_retries:
+            attempt += 1
+            print(f"\n--- Turn {attempt}: Evaluating State via Decision Endpoint ---")
+            print(f"[Current State]: {current_state}")
 
-            prompt = (
-                f"User Query: {user_query}\n"
-                f"Tool Output: {tool_output_value}"
-            )
-            reply_response = await Runner.run(reply_agent, input=prompt)
-            final_message = reply_response.final_output.strip()
+            # 2. Call Decision Endpoint (capturing full raw response & duration)
+            decision, raw_api_data, dec_duration = decision_agent(current_state)
+            print(f"[Decision Output]: {decision} ({dec_duration}s)")
 
-            print(f"\n[Final Result to User]:\n{final_message}")
-            return final_message
+            log_entry["steps"].append({
+                "step": "decision_agent",
+                "turn": attempt,
+                "duration_sec": dec_duration,
+                "input_state": current_state,
+                "decision": decision,
+                "raw_api_response": raw_api_data,
+            })
 
-        # CASE 2: Tool execution is requested (Use Tool, Retry, or Continue)
-        if decision in ("Use Tool", "Retry", "Continue"):
-            cli_result = run_assistant(cleaned_command)
+            # CASE 1: Evaluator decides to reply to the user
+            if decision == "Reply to the user":
+                tool_output_value = last_output if last_output else "No tool called"
+                prompt = (
+                    f"User Query: {user_query}\n"
+                    f"Tool Output: {tool_output_value}"
+                )
 
-            if cli_result["status"] == "success":
-                last_output = cli_result["output"]
-            else:
-                last_output = cli_result.get("error") or "Tool execution failed"
+                t0_reply = time.perf_counter()
+                reply_response = await Runner.run(reply_agent, input=prompt)
+                reply_duration = round(time.perf_counter() - t0_reply, 4)
+                final_message = reply_response.final_output.strip()
 
-            # Update the state string for the next evaluator turn
-            current_state = (
-                f'The user sent a query: "{cleaned_command}". '
-                f'Tool was called and returned output: "{last_output}"'
-            )
+                log_entry["steps"].append({
+                    "step": "reply_agent",
+                    "turn": attempt,
+                    "duration_sec": reply_duration,
+                    "prompt": prompt,
+                    "output": final_message,
+                })
+                log_entry["final_output"] = final_message
 
-    print("\n[Terminated]: Exceeded maximum retry attempts.")
-    fallback_output = last_output if last_output else "No tool called"
-    fallback_prompt = (
-        f"User Query: {user_query}\n"
-        f"Tool Output: {fallback_output} (Max attempts exceeded)"
-    )
-    fallback_reply = await Runner.run(reply_agent, input=fallback_prompt)
-    final_fallback = fallback_reply.final_output.strip()
-    print(f"[Final Result to User]:\n{final_fallback}")
-    return final_fallback
+                print(f"\n[Final Result to User]:\n{final_message}")
+                return final_message
+
+            # CASE 2: Tool execution is requested (Use Tool, Retry, or Continue)
+            if decision in ("Use Tool", "Retry", "Continue"):
+                t0_tool = time.perf_counter()
+                cli_result = run_assistant(cleaned_command)
+                tool_duration = round(time.perf_counter() - t0_tool, 4)
+
+                if cli_result["status"] == "success":
+                    last_output = cli_result["output"]
+                else:
+                    last_output = cli_result.get("error") or "Tool execution failed"
+
+                log_entry["steps"].append({
+                    "step": "tool_execution",
+                    "turn": attempt,
+                    "duration_sec": tool_duration,
+                    "command": cleaned_command,
+                    "result": cli_result,
+                })
+
+                current_state = (
+                    f'The user sent a query: "{cleaned_command}". '
+                    f'Tool was called and returned output: "{last_output}"'
+                )
+
+        # Fallback if max attempts exceeded
+        print("\n[Terminated]: Exceeded maximum retry attempts.")
+        fallback_output = last_output if last_output else "No tool called"
+        fallback_prompt = (
+            f"User Query: {user_query}\n"
+            f"Tool Output: {fallback_output} (Max attempts exceeded)"
+        )
+
+        t0_fallback = time.perf_counter()
+        fallback_reply = await Runner.run(reply_agent, input=fallback_prompt)
+        fallback_duration = round(time.perf_counter() - t0_fallback, 4)
+        final_fallback = fallback_reply.final_output.strip()
+
+        log_entry["steps"].append({
+            "step": "fallback_reply_agent",
+            "duration_sec": fallback_duration,
+            "prompt": fallback_prompt,
+            "output": final_fallback,
+        })
+        log_entry["final_output"] = final_fallback
+
+        print(f"[Final Result to User]:\n{final_fallback}")
+        return final_fallback
+
+    finally:
+        # Compute total workflow time and persist log
+        log_entry["total_duration_sec"] = round(time.perf_counter() - workflow_start_time, 4)
+        save_run_log(log_entry, filepath=LOG_FILE)
+        print(f"\n[Log Saved]: {LOG_FILE} (Total time: {log_entry['total_duration_sec']}s)")
 
 
 # ---------------------------------------------------------------------------
 # 5. Run Workflow
 # ---------------------------------------------------------------------------
 async def main():
-    await run_workflow("man... open discord")
+    await run_workflow("man... open terminal in my content folder")
 
 
 if __name__ == "__main__":

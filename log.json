@@ -1,0 +1,228 @@
+[
+  {
+    "run_id": "144e057b-e961-455c-a502-24d02bd74c87",
+    "timestamp": "2026-09-25T16:33:07.558232+00:00",
+    "user_query": "man... open discord",
+    "cleaned_command": "open discord",
+    "total_duration_sec": 9.1257,
+    "final_output": "The action cannot be performed as Discord is not installed.",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 4.5695,
+        "input": "man... open discord",
+        "output": "open discord"
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 1.6691,
+        "input_state": "The user sent a query: \"open discord\". Status: No tool called yet.",
+        "decision": "Use Tool",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 235.11,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Use Tool",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.03,
+                  "Reply to the user": 0.23,
+                  "Use Tool": 0.74
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 356,
+              "outputTokens": 50,
+              "totalTokens": 406
+            },
+            "confidence": {
+              "decision": 0.65
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "tool_execution",
+        "turn": 1,
+        "duration_sec": 1.2272,
+        "command": "open discord",
+        "result": {
+          "status": "success",
+          "output": "discord is not installed",
+          "error": null,
+          "exit_code": 0
+        }
+      },
+      {
+        "step": "decision_agent",
+        "turn": 2,
+        "duration_sec": 0.8083,
+        "input_state": "The user sent a query: \"open discord\". Tool was called and returned output: \"discord is not installed\"",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 127,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0,
+                  "Reply to the user": 0.99,
+                  "Use Tool": 0.01
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 362,
+              "outputTokens": 52,
+              "totalTokens": 414
+            },
+            "confidence": {
+              "decision": 0.99
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 2,
+        "duration_sec": 0.8512,
+        "prompt": "User Query: man... open discord\nTool Output: discord is not installed",
+        "output": "The action cannot be performed as Discord is not installed."
+      }
+    ]
+  },
+  {
+    "run_id": "50686823-f52a-4c66-a48a-fa1d10f87e6e",
+    "timestamp": "2026-09-25T16:34:24.256995+00:00",
+    "user_query": "man... open terminal in my content folder",
+    "cleaned_command": "open terminal in your content folder",
+    "total_duration_sec": 45.2894,
+    "final_output": null,
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 1.512,
+        "input": "man... open terminal in my content folder",
+        "output": "open terminal in your content folder"
+      }
+    ]
+  },
+  {
+    "run_id": "45d84e4f-af2d-41a7-85f2-32163cb7c330",
+    "timestamp": "2026-09-25T16:35:15.869663+00:00",
+    "user_query": "man... open terminal in my content folder",
+    "cleaned_command": "open terminal in my content folder",
+    "total_duration_sec": 6.8539,
+    "final_output": "The terminal was successfully started in your content folder. You can now access files or run commands there.",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 2.0887,
+        "input": "man... open terminal in my content folder",
+        "output": "open terminal in my content folder"
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 1.0433,
+        "input_state": "The user sent a query: \"open terminal in my content folder\". Status: No tool called yet.",
+        "decision": "Use Tool",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 224.25,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Use Tool",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.03,
+                  "Reply to the user": 0.27,
+                  "Use Tool": 0.7
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 360,
+              "outputTokens": 50,
+              "totalTokens": 410
+            },
+            "confidence": {
+              "decision": 0.59
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "tool_execution",
+        "turn": 1,
+        "duration_sec": 1.8438,
+        "command": "open terminal in my content folder",
+        "result": {
+          "status": "success",
+          "output": "Successfully opened ptyxis at '/home/omar/content' (ran: `ptyxis --new-window -d /home/omar/content`)",
+          "error": null,
+          "exit_code": 0
+        }
+      },
+      {
+        "step": "decision_agent",
+        "turn": 2,
+        "duration_sec": 0.8141,
+        "input_state": "The user sent a query: \"open terminal in my content folder\". Tool was called and returned output: \"Successfully opened ptyxis at '/home/omar/content' (ran: `ptyxis --new-window -d /home/omar/content`)\"",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 134.22,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.01,
+                  "Reply to the user": 0.99,
+                  "Use Tool": 0
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 391,
+              "outputTokens": 52,
+              "totalTokens": 443
+            },
+            "confidence": {
+              "decision": 0.99
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 2,
+        "duration_sec": 1.0637,
+        "prompt": "User Query: man... open terminal in my content folder\nTool Output: Successfully opened ptyxis at '/home/omar/content' (ran: `ptyxis --new-window -d /home/omar/content`)",
+        "output": "The terminal was successfully started in your content folder. You can now access files or run commands there."
+      }
+    ]
+  }
+]
