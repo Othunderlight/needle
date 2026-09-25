@@ -162,6 +162,16 @@ async def run_workflow(user_query: str, max_retries: int = 3):
     print(f"User Request: '{user_query}'")
     print(f"==========================================")
 
+    # 1. Clean the user query ONCE upfront
+    formatter_result = await Runner.run(formatter_agent, input=user_query)
+    user_query = (
+        formatter_result.final_output.strip()
+        .strip("`")
+        .strip('"')
+        .strip("'")
+    )
+    print(f"[Cleaned Command for Tools]: '{user_query}'")
+
     current_state = f'The user send a query "{user_query}"'
     last_output = None
 
@@ -171,15 +181,8 @@ async def run_workflow(user_query: str, max_retries: int = 3):
         print(f"\n--- Turn {attempt}: Evaluating State via Decision Endpoint ---")
         print(f"[Current State]: {current_state}")
 
-        formatter_result = await Runner.run(formatter_agent, input=current_state)
-        formatted_current_state = (
-            formatter_result.final_output.strip()
-            .strip("`")
-            .strip('"')
-            .strip("'")
-        )
-        print(f"  [formatted current state]: '{formatted_current_state}'")
-        decision = decision_agent(formatted_current_state)
+        # Pass the state directly to the decision evaluator
+        decision = decision_agent(current_state)
         print(f"[Decision Output]: {decision}")
 
         # CASE 1: Evaluator decides to reply to the user
@@ -196,21 +199,15 @@ async def run_workflow(user_query: str, max_retries: int = 3):
 
         # CASE 2: Tool execution is requested (Use Tool, Retry, or Continue)
         if decision in ("Use Tool", "Retry", "Continue"):
-            # 1. Reformat the query with the FormatterAgent
-            formatter_result = await Runner.run(formatter_agent, input=user_query)
-            formatted_command = (
-                formatter_result.final_output.strip()
-                .strip("`")
-                .strip('"')
-                .strip("'")
+            # 2. Directly execute using the pre-formatted command
+            cli_result = run_assistant(user_query)
+            last_output = (
+                cli_result["output"]
+                if cli_result["status"] == "success"
+                else cli_result["error"]
             )
-            print(f"  [Formatted Command]: '{formatted_command}'")
 
-            # 2. Execute the cleaned command
-            cli_result = run_assistant(formatted_command)
-            last_output = cli_result["output"] if cli_result["status"] == "success" else cli_result["error"]
-
-            # 3. Update the state string to feed into the next decision turn
+            # 3. Update the state string for the next turn
             current_state = (
                 f'The user send a query "{user_query}", a tool was called and the output was "{last_output}"'
             )
