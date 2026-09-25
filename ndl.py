@@ -434,7 +434,7 @@ def _launch_with_fallback(app_key: str, path_arg: str = None) -> str:
 # 4. TEST RUN
 # ==========================================
 
-def run_command_agent(input_text: str) -> str:
+def run_command_agent(input_text: str) -> dict[str, str | list[str] | None]:
     """
     Runs the Needle agent with the given input text.
     This function is designed to be imported and used from other files.
@@ -446,7 +446,12 @@ def run_command_agent(input_text: str) -> str:
         The result string from the agent execution.
     """
     agent = needle.Needle(tools=[open_app])
-    return agent.run(input_text)
+    result = agent.run(input_text, max_steps=1)
+    return {
+        "success": result.get("success"),
+        "error": result.get("error"),
+        "results": result.get("results", [])
+    }
 
 
 if __name__ == "__main__":

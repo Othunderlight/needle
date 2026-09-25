@@ -100,32 +100,67 @@ cli_clarifier_agent = Agent(
 
 def run_assistant(command: str) -> dict[str, Any]:
     """
-    Executes a CLI command using the run_command_agent helper and returns structured feedback.
+    Executes a query via ndl.run_command_agent (needle) and returns structured feedback.
+
+    needle's envelope looks like:
+      {
+        "type": "call" | "respond",   # engine mode, NOT tool success
+        "success": bool,              # engine call succeeded, NOT tool success
+        "error": str | None,          # engine-level failure
+        "results": [str | dict],      # one entry per executed tool call
+        "reasoning": str,
+        ...
+      }
+    Tool success/failure lives in "results": "✅ ..." = ok, "❌ ..." or
+    {"error": ...} = failed.
     """
     print(f"  [CLI Executing]: {command}")
     try:
         result = run_command_agent(command)
-        if result.get("success"):
-            return {
-                "status": "success",
-                "output": "; results[0] if result.get("results") else "(Command ran with no output)",
-                "error": None,
-                "exit_code": 0,
-            }
-        else:
-            return {
-                "status": "error",
-                "output": result.get("results", [])[0] if result.get("results") else "",
-                "error": result.get("error") or result.get("reason") or f"Command exited with code {result.get('error_code')}",
-                "exit_code": result.get("error_code") or -1,
-            }
-    except (ValueError, KeyError) as exc:
+    except Exception as exc:  # engine/runtime failures must not kill the loop
         return {
             "status": "error",
             "output": "",
             "error": str(exc),
             "exit_code": -1,
         }
+
+    # 1. Engine-level failure (needle itself failed to run)
+    if result.get("success") is False:
+        return {
+            "status": "error",
+            "output": "",
+            "error": result.get("error")
+            or result.get("reason")
+            or "The CLI engine failed to run this query.",
+            "exit_code": result.get("error_code") or -1,
+        }
+
+    results = result.get("results") or []
+
+    # 2. No tool was executed -> give the decision agent feedback to retry
+    if not results:
+        return {
+            "status": "no_tool",
+            "output": result.get("reasoning") or "",
+            "error": (
+                "No tool was executed for this query. Reformat the query so it "
+                "clearly and directly asks to open a specific app "
+                "(e.g. 'open <app>' or 'open <app> in <folder>')."
+            ),
+            "exit_code": 1,
+        }
+
+    # 3. Evaluate the last executed tool result
+    last = results[-1]
+    if isinstance(last, dict) and "error" in last:
+        return {"status": "error", "output": "", "error": str(last["error"]), "exit_code": 1}
+
+    output = str(last)
+    if output.lstrip().startswith("❌"):
+        return {"status": "error", "output": output, "error": output, "exit_code": 1}
+
+    return {"status": "success", "output": output, "error": None, "exit_code": 0}
 
 
 # ---------------------------------------------------------------------------
@@ -202,13 +237,13 @@ async def run_workflow(user_query: str, max_retries: int = 3):
 # ---------------------------------------------------------------------------
 async def main():
     # Test 1: Query that does NOT need a tool (Agent replies directly)
-    await run_workflow("What is the capital of France?")
+    # await run_workflow("What is the capital of France?")
 
     # Test 2: Query that needs a tool and succeeds
     await run_workflow("open terminal in remotion folder")
 
     # Test 3: Query that fails initially and triggers the retry loop
-    await run_workflow("Print the content of myfile.txt, but if it doesn't exist, list files in the current folder")
+    # await run_workflow("Print the content of myfile.txt, but if it doesn't exist, list files in the current folder")
 
 
 if __name__ == "__main__":
