@@ -85,9 +85,9 @@ formatter_agent = Agent(
     name="FormatterAgent",
     model=ollama_model,
     instructions=(
-        "you are a stripper agent. Given the following text, remove any unnecessary info/words from it"
-        # "direct action-first text ready for tool agent to understand and call the propper tools. "
-        "Do NOT include explanations, markdown, or quotes. Output ONLY the clean single-line action text."
+        "You are a command cleaning agent. Given the user's input, extract only "
+        "the direct action command suitable for tool execution. "
+        "Do NOT include explanations, markdown, or quotes. Output ONLY the clean action text."
     ),
 )
 
@@ -95,18 +95,17 @@ reply_agent = Agent(
     name="ReplyAgent",
     model=ollama_model,
     instructions=(
-        "You are constructing the final response to the user.\n"
-        "You will receive the user's initial query and the execution results from tools.\n"
-        "Write a concise, friendly, and natural sentence confirming if the action succeeded or failed "
-        "(e.g., 'Done! I opened the terminal in the remotion folder for you.' or 'Sorry, I couldn't open the terminal.'). "
-        "Do not output raw logs or technical code paths unless necessary."
+        "You formulate the final response to the user based STRICTLY on the tool execution output.\n"
+        "- If Tool Output is 'No tool called' or describes a failure, tell the user honestly that the action was not performed or failed.\n"
+        "- NEVER claim that you opened or performed something unless Tool Output explicitly confirms success (e.g. '✅').\n"
+        "- Keep the answer concise, friendly, and natural."
     ),
 )
 
 
 def run_assistant(command: str) -> dict[str, Any]:
     """
-    Executes a query via ndl.run_command_agent (needle) and returns structured feedback.
+    Executes a query via ndl.run_command_agent (needle) and parses results safely.
     """
     print(f"  [CLI Executing]: {command}")
     try:
@@ -119,39 +118,54 @@ def run_assistant(command: str) -> dict[str, Any]:
             "exit_code": -1,
         }
 
-    if result.get("success") is False:
+    # Handle explicit error return
+    if not isinstance(result, dict) or result.get("success") is False:
+        err_msg = (
+            result.get("error")
+            if isinstance(result, dict)
+            else "The CLI engine failed to run this query."
+        ) or "Unknown CLI failure."
         return {
             "status": "error",
             "output": "",
-            "error": result.get("error")
-            or result.get("reason")
-            or "The CLI engine failed to run this query.",
-            "exit_code": result.get("error_code") or -1,
+            "error": err_msg,
+            "exit_code": 1,
         }
 
-    results = result.get("results") or []
+    results = result.get("results")
+    if results is None:
+        results = []
+    elif isinstance(results, str):
+        results = [results]
 
     if not results:
         return {
             "status": "no_tool",
-            "output": result.get("reasoning") or "",
-            "error": (
-                "No tool was executed for this query. Reformat the query so it "
-                "clearly and directly asks to open a specific app "
-                "(e.g. 'open <app>' or 'open <app> in <folder>')."
-            ),
+            "output": "",
+            "error": result.get("error") or "No tool was executed for this query.",
             "exit_code": 1,
         }
 
-    last = results[-1]
-    if isinstance(last, dict) and "error" in last:
-        return {"status": "error", "output": "", "error": str(last["error"]), "exit_code": 1}
+    last_entry = results[-1]
 
-    output = str(last)
-    if output.lstrip().startswith("❌"):
-        return {"status": "error", "output": output, "error": output, "exit_code": 1}
+    # Extract string output from dict or primitive
+    if isinstance(last_entry, dict):
+        if last_entry.get("error"):
+            return {
+                "status": "error",
+                "output": "",
+                "error": str(last_entry["error"]),
+                "exit_code": 1,
+            }
+        output_str = str(last_entry.get("output") or last_entry.get("result") or last_entry)
+    else:
+        output_str = str(last_entry)
 
-    return {"status": "success", "output": output, "error": None, "exit_code": 0}
+    # Check for CLI failure markers
+    if output_str.lstrip().startswith("❌"):
+        return {"status": "error", "output": "", "error": output_str, "exit_code": 1}
+
+    return {"status": "success", "output": output_str, "error": None, "exit_code": 0}
 
 
 # ---------------------------------------------------------------------------
@@ -162,18 +176,22 @@ async def run_workflow(user_query: str, max_retries: int = 3):
     print(f"User Request: '{user_query}'")
     print(f"==========================================")
 
-    # 1. Clean the user query ONCE upfront
+    # 1. Clean the user query for CLI tool consumption
     formatter_result = await Runner.run(formatter_agent, input=user_query)
-    user_query = (
+    cleaned_command = (
         formatter_result.final_output.strip()
         .strip("`")
         .strip('"')
         .strip("'")
     )
-    print(f"[Cleaned Command for Tools]: '{user_query}'")
+    if not cleaned_command:
+        cleaned_command = user_query
 
-    current_state = f'The user send a query "{user_query}"'
-    last_output = None
+    print(f"[Cleaned Command for Tools]: '{cleaned_command}'")
+
+    # Initial state explicitly informs evaluator that no tool has been run yet
+    current_state = f'The user sent a query: "{cleaned_command}". Status: No tool called yet.'
+    last_output: str | None = None
 
     attempt = 0
     while attempt < max_retries:
@@ -181,15 +199,16 @@ async def run_workflow(user_query: str, max_retries: int = 3):
         print(f"\n--- Turn {attempt}: Evaluating State via Decision Endpoint ---")
         print(f"[Current State]: {current_state}")
 
-        # Pass the state directly to the decision evaluator
         decision = decision_agent(current_state)
         print(f"[Decision Output]: {decision}")
 
         # CASE 1: Evaluator decides to reply to the user
         if decision == "Reply to the user":
+            tool_output_value = last_output if last_output else "No tool called"
+
             prompt = (
                 f"User Query: {user_query}\n"
-                f"Tool Execution Output: {last_output if last_output else 'No tool was needed. REPLY NOW'}"
+                f"Tool Output: {tool_output_value}"
             )
             reply_response = await Runner.run(reply_agent, input=prompt)
             final_message = reply_response.final_output.strip()
@@ -199,34 +218,36 @@ async def run_workflow(user_query: str, max_retries: int = 3):
 
         # CASE 2: Tool execution is requested (Use Tool, Retry, or Continue)
         if decision in ("Use Tool", "Retry", "Continue"):
-            # 2. Directly execute using the pre-formatted command
-            cli_result = run_assistant(user_query)
-            last_output = (
-                cli_result["output"]
-                if cli_result["status"] == "success"
-                else cli_result["error"]
-            )
+            cli_result = run_assistant(cleaned_command)
 
-            # 3. Update the state string for the next turn
+            if cli_result["status"] == "success":
+                last_output = cli_result["output"]
+            else:
+                last_output = cli_result.get("error") or "Tool execution failed"
+
+            # Update the state string for the next evaluator turn
             current_state = (
-                f'The user send a query "{user_query}", a tool was called and the output was "{last_output}"'
+                f'The user sent a query: "{cleaned_command}". '
+                f'Tool was called and returned output: "{last_output}"'
             )
 
     print("\n[Terminated]: Exceeded maximum retry attempts.")
+    fallback_output = last_output if last_output else "No tool called"
     fallback_prompt = (
         f"User Query: {user_query}\n"
-        f"Tool Execution Output: Failed or timed out after {max_retries} attempts. Last output: {last_output}"
+        f"Tool Output: {fallback_output} (Max attempts exceeded)"
     )
     fallback_reply = await Runner.run(reply_agent, input=fallback_prompt)
-    print(f"[Final Result to User]:\n{fallback_reply.final_output.strip()}")
-    return fallback_reply.final_output.strip()
+    final_fallback = fallback_reply.final_output.strip()
+    print(f"[Final Result to User]:\n{final_fallback}")
+    return final_fallback
 
 
 # ---------------------------------------------------------------------------
 # 5. Run Workflow
 # ---------------------------------------------------------------------------
 async def main():
-    await run_workflow("man... open terminal in remotion folder")
+    await run_workflow("man... open discord")
 
 
 if __name__ == "__main__":

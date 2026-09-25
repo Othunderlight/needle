@@ -202,6 +202,65 @@ FOLDERS_DATABASE = {
     },
 }
 
+
+
+###################################### not using this for now ######################################################
+# Keywords to help map common user terms or uninstalled apps to your categories
+CATEGORY_KEYWORDS = {
+    "chatapp": ["chat", "message", "messaging", "talk", "social", "discord", "slack", "telegram", "whatsapp"],
+    "browser": ["browser", "web", "internet", "surf", "chrome", "firefox", "brave", "edge", "safari"],
+    "IDE": ["ide", "code", "dev", "program", "develop"],
+    "terminal-editor": ["editor", "text editor", "terminal editor"],
+    "terminal-emulator": ["terminal", "console", "shell", "bash", "command prompt"],
+    "screen-recorder": ["record", "recorder", "screen", "capture", "streaming", "obs"],
+    "developer-tools": ["api", "dev", "developer", "http", "postman"],
+    "networking": ["tunnel", "network", "port"],
+    "productivity": ["notes", "docs", "todo", "productivity", "notion"],
+    "VPN": ["vpn", "privacy", "proxy"],
+}
+
+
+def _suggest_relevant_apps(query: str) -> str:
+    """Returns the most relevant apps by category or fuzzy name matching."""
+    query_clean = query.lower().strip()
+
+    # 1. Match by Category / Intent
+    matched_categories = set()
+    for cat, keywords in CATEGORY_KEYWORDS.items():
+        if cat in query_clean or any(kw in query_clean for kw in keywords):
+            matched_categories.add(cat)
+
+    if matched_categories:
+        category_apps = [
+            key for key, data in APPS_DATABASE.items()
+            if data.get("category") in matched_categories
+        ]
+        if category_apps:
+            return (
+                f"App '{query}' is not installed/configured. "
+                f"Relevant apps in that category: {', '.join(category_apps)}"
+            )
+
+    # 2. Match by Name / Typo (Did you mean...?)
+    # Using cutoff=0.45 is safe here because we are only suggesting, not launching
+    close_aliases = get_close_matches(query_clean, list(APP_ALIAS_MAP.keys()), n=3, cutoff=0.45)
+    if close_aliases:
+        suggested_apps = list(dict.fromkeys(APP_ALIAS_MAP[alias] for alias in close_aliases))
+        return f"Could not find app '{query}'. Did you mean: {', '.join(suggested_apps)}?"
+
+    # 3. Clean grouped fallback
+    grouped = {}
+    for app, data in APPS_DATABASE.items():
+        cat = data.get("category", "other")
+        grouped.setdefault(cat, []).append(app)
+
+    formatted_categories = "\n".join(f"  • {cat}: {', '.join(apps)}" for cat, apps in grouped.items())
+    return f"Could not find app '{query}'. Available apps by category:\n{formatted_categories}"
+
+
+###################################### not using this for now ######################################################
+
+
 # ==========================================
 # 2. ALIAS BUILDER & MATCHER
 # ==========================================
@@ -218,7 +277,7 @@ APP_ALIAS_MAP = _build_alias_map(APPS_DATABASE)
 FOLDER_ALIAS_MAP = _build_alias_map(FOLDERS_DATABASE)
 
 
-def _fuzzy_lookup(query: str, alias_map: dict, cutoff: float = 0.5) -> str | None:
+def _fuzzy_lookup(query: str, alias_map: dict, cutoff: float = 0.75) -> str | None:
     """Fuzzy searches a query string inside an alias mapping."""
     if not query:
         return None
@@ -259,8 +318,9 @@ def open_app(app_name: str, target_folder: str = "") -> str:
     # Resolve App
     app_key = _fuzzy_lookup(app_name, APP_ALIAS_MAP)
     if not app_key:
-        available = ", ".join(APPS_DATABASE.keys())
-        return f"❌ Could not find app '{app_name}'. Available apps: {available}"
+        # Smart suggestions by category / typo
+        # return _suggest_relevant_apps(app_name)
+        return f"{app_name} is not installed"
 
     # Resolve Folder / Target (if provided)
     resolved_path = None
@@ -409,7 +469,7 @@ def _launch_with_fallback(app_key: str, path_arg: str = None) -> str:
                     start_new_session=True,
                 )
                 target_msg = f" at '{path_arg}'" if path_arg else ""
-                return f"✅ Successfully opened {app_key}{target_msg} (ran: `{' '.join(full_cmd)}`)"
+                return f"Successfully opened {app_key}{target_msg} (ran: `{' '.join(full_cmd)}`)"
             except Exception:
                 continue
 
@@ -463,4 +523,4 @@ if __name__ == "__main__":
     # print(run_command_agent("open sublime with my video project"))
 
     # Test 3: Files app with downloads
-    print(run_command_agent("open codex in remotion folder"))
+    print(run_command_agent("open discord"))
