@@ -66,6 +66,7 @@ class ChatCompletionRequest(BaseModel):
     messages: List[ChatMessage]
     stream: Optional[bool] = False
     max_retries: Optional[int] = Field(default=3, description="Custom retry limit")
+    model_config = {"extra": "ignore"}
 
 
 class ChoiceMessage(BaseModel):
@@ -127,10 +128,22 @@ async def chat_completions(
     req: ChatCompletionRequest,
     background_tasks: BackgroundTasks,  # <-- Injected by FastAPI
 ):
+    # Debug: show what we received
     print(f"[DEBUG] Request body: model={req.model}, messages_count={len(req.messages)}, stream={req.stream}")
     print(f"[DEBUG] Messages: {req.messages}")
-    if req.stream:
-        raise HTTPException(status_code=400, detail="Streaming is not supported.")
+
+    # Strip out everything except user messages (ignore system, tools, etc.)
+    # Convert to OpenAI-compatible format
+    filtered_messages = [
+        {"role": "user", "content": str(msg.content)}
+        for msg in req.messages
+        if msg.role.lower() == "user"
+    ]
+
+    print(f"[DEBUG] Filtered messages: {filtered_messages}")
+
+    if not filtered_messages:
+        raise HTTPException(status_code=400, detail="No user messages in request")
 
     user_query = extract_last_user_message(req.messages)
     if not user_query:
