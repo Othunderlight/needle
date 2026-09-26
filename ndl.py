@@ -265,40 +265,12 @@ def _suggest_relevant_apps(query: str) -> str:
 # 2. ALIAS BUILDER & MATCHER
 # ==========================================
 
-def _build_alias_map(db: dict) -> dict:
-    mapping = {}
-    for key, data in db.items():
-        mapping[key] = key
-        for alias in data.get("aliases", []):
-            mapping[alias.lower().strip()] = key
-    return mapping
+from tools.helpers import _build_alias_map, _fuzzy_lookup
 
 APP_ALIAS_MAP = _build_alias_map(APPS_DATABASE)
 FOLDER_ALIAS_MAP = _build_alias_map(FOLDERS_DATABASE)
 
 
-def _fuzzy_lookup(query: str, alias_map: dict, cutoff: float = 0.75) -> str | None:
-    """Fuzzy searches a query string inside an alias mapping."""
-    if not query:
-        return None
-
-    query = query.lower().strip()
-
-    # 1. Exact match
-    if query in alias_map:
-        return alias_map[query]
-
-    # 2. Substring matching
-    for alias, key in alias_map.items():
-        if query in alias or alias in query:
-            return key
-
-    # 3. Difflib close match
-    matches = get_close_matches(query, list(alias_map.keys()), n=1, cutoff=cutoff)
-    if matches:
-        return alias_map[matches[0]]
-
-    return None
 
 
 # ==========================================
@@ -495,6 +467,9 @@ def _launch_with_fallback(app_key: str, path_arg: str = None) -> str:
 # 4. TEST RUN
 # ==========================================
 
+from tools.macros import run_macro
+
+
 def run_command_agent(input_text: str) -> dict[str, str | list[str] | None]:
     """
     Runs the Needle agent with the given input text.
@@ -506,7 +481,7 @@ def run_command_agent(input_text: str) -> dict[str, str | list[str] | None]:
     Returns:
         The result string from the agent execution.
     """
-    agent = needle.Needle(tools=[open_app])
+    agent = needle.Needle(tools=[open_app, run_macro])
     result = agent.run(input_text, max_steps=1)
     return {
         "success": result.get("success"),
@@ -526,4 +501,4 @@ if __name__ == "__main__":
     # print(run_command_agent("open sublime with my video project"))
 
     # Test 3: Files app with downloads
-    print(run_command_agent("open discord"))
+    print(run_command_agent("dady is home"))

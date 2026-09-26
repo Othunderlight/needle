@@ -23,4 +23,3 @@ response = chat(
 # pets = PetList.model_validate_json(response.message.content)
 # print(pets)
 print(response.message.content)
-
