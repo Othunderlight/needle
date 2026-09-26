@@ -515,6 +515,9 @@ def run_command_agent(input_text: str) -> dict[str, str | list[str] | None]:
     }
 
 
+
+
+
 if __name__ == "__main__":
     # Test 1: Just the app
     # print(run_command_agent("open telegram"))

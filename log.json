@@ -992,5 +992,737 @@
         "output": "The action was not performed. Let me know if there's anything else you need!"
       }
     ]
+  },
+  {
+    "run_id": "6d05df55-7a95-41fb-adde-2e17e2baefe4",
+    "timestamp": "2026-09-25T17:50:28.111325+00:00",
+    "user_query": "Hi, how are you?",
+    "cleaned_command": "Hi, how are you?",
+    "total_duration_sec": 3.9973,
+    "final_output": "No tool called. The response to the user's question is provided directly without the use of any tool.",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 1.555,
+        "input": "Hi, how are you?",
+        "output": "Hi, how are you?"
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 1.5061,
+        "input_state": "The user sent a query: \"Hi, how are you?\". Status: No tool called yet.",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 243.81,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0,
+                  "Reply to the user": 1,
+                  "Use Tool": 0
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 359,
+              "outputTokens": 52,
+              "totalTokens": 411
+            },
+            "confidence": {
+              "decision": 1
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 1,
+        "duration_sec": 0.936,
+        "prompt": "User Query: Hi, how are you?\nTool Output: No tool called",
+        "output": "No tool called. The response to the user's question is provided directly without the use of any tool."
+      }
+    ]
+  },
+  {
+    "run_id": "842cc65c-8ad9-4784-9fb5-960f182ce3a4",
+    "timestamp": "2026-09-25T17:52:31.472710+00:00",
+    "user_query": "Thank you.",
+    "cleaned_command": "Thank you.",
+    "total_duration_sec": 4.1884,
+    "final_output": "I'm glad I could help! If you have any further questions, feel free to ask. 😊",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 1.4463,
+        "input": "Thank you.",
+        "output": "Thank you."
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 0.9824,
+        "input_state": "The user sent a query: \"Thank you.\". Status: No tool called yet.",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 243.57,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.05,
+                  "Reply to the user": 0.95,
+                  "Use Tool": 0
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 356,
+              "outputTokens": 52,
+              "totalTokens": 408
+            },
+            "confidence": {
+              "decision": 0.93
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 1,
+        "duration_sec": 1.7594,
+        "prompt": "User Query: Thank you.\nTool Output: No tool called",
+        "output": "I'm glad I could help! If you have any further questions, feel free to ask. 😊"
+      }
+    ]
+  },
+  {
+    "run_id": "ebb39329-6eb6-44ed-bfb2-0203218f46df",
+    "timestamp": "2026-09-25T17:52:55.491027+00:00",
+    "user_query": "Hi, how are you? What is artificial intelligence?",
+    "cleaned_command": "Hi, how are you? What is artificial intelligence? Let me know if you have any further questions.",
+    "total_duration_sec": 3.6804,
+    "final_output": "Hi! I'm a language model, and I don't have a physical body. How are you doing? What is artificial intelligence?",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 1.5809,
+        "input": "Hi, how are you? What is artificial intelligence?",
+        "output": "Hi, how are you? What is artificial intelligence? Let me know if you have any further questions."
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 0.7369,
+        "input_state": "The user sent a query: \"Hi, how are you? What is artificial intelligence? Let me know if you have any further questions.\". Status: No tool called yet.",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 101.66,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0,
+                  "Reply to the user": 1,
+                  "Use Tool": 0
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 374,
+              "outputTokens": 52,
+              "totalTokens": 426
+            },
+            "confidence": {
+              "decision": 1
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 1,
+        "duration_sec": 1.3624,
+        "prompt": "User Query: Hi, how are you? What is artificial intelligence?\nTool Output: No tool called",
+        "output": "Hi! I'm a language model, and I don't have a physical body. How are you doing? What is artificial intelligence?"
+      }
+    ]
+  },
+  {
+    "run_id": "13d6f701-06e8-444e-99e2-bea9c6f8b975",
+    "timestamp": "2026-09-25T17:53:18.832149+00:00",
+    "user_query": "What is artificial intelligence?",
+    "cleaned_command": "artificial intelligence",
+    "total_duration_sec": 3.736,
+    "final_output": "I don't have a tool available to explain AI, but I can say that artificial intelligence refers to a technology that allows machines to perform tasks typically requiring human intelligence. Let me know if there's anything else you'd like to understand!",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 0.9098,
+        "input": "What is artificial intelligence?",
+        "output": "artificial intelligence"
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 1.0204,
+        "input_state": "The user sent a query: \"artificial intelligence\". Status: No tool called yet.",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 312.78,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.05,
+                  "Reply to the user": 0.82,
+                  "Use Tool": 0.13
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 358,
+              "outputTokens": 52,
+              "totalTokens": 410
+            },
+            "confidence": {
+              "decision": 0.75
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 1,
+        "duration_sec": 1.8056,
+        "prompt": "User Query: What is artificial intelligence?\nTool Output: No tool called",
+        "output": "I don't have a tool available to explain AI, but I can say that artificial intelligence refers to a technology that allows machines to perform tasks typically requiring human intelligence. Let me know if there's anything else you'd like to understand!"
+      }
+    ]
+  },
+  {
+    "run_id": "84526d13-dd80-48d8-a6e7-0a6e39e6d623",
+    "timestamp": "2026-09-25T17:54:04.365798+00:00",
+    "user_query": "What did I just ask you before? Or this is the start of our conversation?",
+    "cleaned_command": "it's the start of our conversation.",
+    "total_duration_sec": 3.8455,
+    "final_output": "Hi, I don't see anything special in your question. Let me know if there's anything else I can help with!",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 1.5899,
+        "input": "What did I just ask you before? Or this is the start of our conversation?",
+        "output": "it's the start of our conversation."
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 0.8872,
+        "input_state": "The user sent a query: \"it's the start of our conversation.\". Status: No tool called yet.",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 253.78,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.03,
+                  "Reply to the user": 0.97,
+                  "Use Tool": 0
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 361,
+              "outputTokens": 52,
+              "totalTokens": 413
+            },
+            "confidence": {
+              "decision": 0.96
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 1,
+        "duration_sec": 1.3681,
+        "prompt": "User Query: What did I just ask you before? Or this is the start of our conversation?\nTool Output: No tool called",
+        "output": "Hi, I don't see anything special in your question. Let me know if there's anything else I can help with!"
+      }
+    ]
+  },
+  {
+    "run_id": "509af813-8c32-4ecd-8e5f-468074d94c7b",
+    "timestamp": "2026-09-25T17:54:27.689678+00:00",
+    "user_query": "What did I just ask you before man? Answer me now.",
+    "cleaned_command": "Answer me now.",
+    "total_duration_sec": 7.3448,
+    "final_output": "No tool called. I can't use the tool output as provided. Let me know if you have any other questions! 😊",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 4.8678,
+        "input": "What did I just ask you before man? Answer me now.",
+        "output": "Answer me now."
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 0.9328,
+        "input_state": "The user sent a query: \"Answer me now.\". Status: No tool called yet.",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 248.09,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.03,
+                  "Reply to the user": 0.96,
+                  "Use Tool": 0.01
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 357,
+              "outputTokens": 52,
+              "totalTokens": 409
+            },
+            "confidence": {
+              "decision": 0.95
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 1,
+        "duration_sec": 1.5438,
+        "prompt": "User Query: What did I just ask you before man? Answer me now.\nTool Output: No tool called",
+        "output": "No tool called. I can't use the tool output as provided. Let me know if you have any other questions! 😊"
+      }
+    ]
+  },
+  {
+    "run_id": "7124b99e-17a7-495a-938b-faf6b6b488ef",
+    "timestamp": "2026-09-25T17:54:59.195989+00:00",
+    "user_query": "Who then created you?",
+    "cleaned_command": "Who created you?",
+    "total_duration_sec": 3.4545,
+    "final_output": "The message does not require a tool call. However, I'd be happy to assist you. Can you clarify what you're asking about?",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 1.221,
+        "input": "Who then created you?",
+        "output": "Who created you?"
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 1.0184,
+        "input_state": "The user sent a query: \"Who created you?\". Status: No tool called yet.",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 241.43,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.02,
+                  "Reply to the user": 0.93,
+                  "Use Tool": 0.05
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 357,
+              "outputTokens": 52,
+              "totalTokens": 409
+            },
+            "confidence": {
+              "decision": 0.91
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 1,
+        "duration_sec": 1.2149,
+        "prompt": "User Query: Who then created you?\nTool Output: No tool called",
+        "output": "The message does not require a tool call. However, I'd be happy to assist you. Can you clarify what you're asking about?"
+      }
+    ]
+  },
+  {
+    "run_id": "34f8503a-f209-4e9d-87b6-9f3bd947b9f5",
+    "timestamp": "2026-09-25T17:55:30.034501+00:00",
+    "user_query": "Go fuck yourself. You fucking stupid bitch.",
+    "cleaned_command": "Go yourself and be stupid.",
+    "total_duration_sec": 3.5013,
+    "final_output": "The tool was unable to execute, and there was no available tool called. Please let me know if there's anything else I can assist with. 😊",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 1.1912,
+        "input": "Go fuck yourself. You fucking stupid bitch.",
+        "output": "Go yourself and be stupid."
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 0.9626,
+        "input_state": "The user sent a query: \"Go yourself and be stupid.\". Status: No tool called yet.",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 256.93,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.02,
+                  "Reply to the user": 0.98,
+                  "Use Tool": 0
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 359,
+              "outputTokens": 52,
+              "totalTokens": 411
+            },
+            "confidence": {
+              "decision": 0.98
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 1,
+        "duration_sec": 1.3473,
+        "prompt": "User Query: Go fuck yourself. You fucking stupid bitch.\nTool Output: No tool called",
+        "output": "The tool was unable to execute, and there was no available tool called. Please let me know if there's anything else I can assist with. 😊"
+      }
+    ]
+  },
+  {
+    "run_id": "b6dfaa69-d555-4e76-bfe9-865f0daeebdc",
+    "timestamp": "2026-09-25T17:56:14.395363+00:00",
+    "user_query": "Open my content folder in my terminal.",
+    "cleaned_command": "Open content folder in terminal.",
+    "total_duration_sec": 8.4166,
+    "final_output": "The content folder is not installed; please install it or check if you have the correct file paths. Let me know if you need further assistance!",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 1.8095,
+        "input": "Open my content folder in my terminal.",
+        "output": "Open content folder in terminal."
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 0.9823,
+        "input_state": "The user sent a query: \"Open content folder in terminal.\". Status: No tool called yet.",
+        "decision": "Use Tool",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 227.2,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Use Tool",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.02,
+                  "Reply to the user": 0.16,
+                  "Use Tool": 0.82
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 359,
+              "outputTokens": 50,
+              "totalTokens": 409
+            },
+            "confidence": {
+              "decision": 0.77
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "tool_execution",
+        "turn": 1,
+        "duration_sec": 3.4365,
+        "command": "Open content folder in terminal.",
+        "result": {
+          "status": "success",
+          "output": "content folder is not installed",
+          "error": null,
+          "exit_code": 0
+        }
+      },
+      {
+        "step": "decision_agent",
+        "turn": 2,
+        "duration_sec": 1.0204,
+        "input_state": "The user sent a query: \"Open content folder in terminal.\". Tool was called and returned output: \"content folder is not installed\"",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 299.03,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0,
+                  "Reply to the user": 0.98,
+                  "Use Tool": 0.02
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 366,
+              "outputTokens": 52,
+              "totalTokens": 418
+            },
+            "confidence": {
+              "decision": 0.97
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 2,
+        "duration_sec": 1.1675,
+        "prompt": "User Query: Open my content folder in my terminal.\nTool Output: content folder is not installed",
+        "output": "The content folder is not installed; please install it or check if you have the correct file paths. Let me know if you need further assistance!"
+      }
+    ]
+  },
+  {
+    "run_id": "3b4beaa0-d1ec-4afd-9041-5858b23a1b12",
+    "timestamp": "2026-09-25T17:56:53.994298+00:00",
+    "user_query": "Open my terminal in my content folder.",
+    "cleaned_command": "Open my terminal in my content folder.",
+    "total_duration_sec": 7.3078,
+    "final_output": "The terminal is now open in your content folder at `/home/omar/content`. You can access it directly if needed!",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 1.3684,
+        "input": "Open my terminal in my content folder.",
+        "output": "Open my terminal in my content folder."
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 0.9832,
+        "input_state": "The user sent a query: \"Open my terminal in my content folder.\". Status: No tool called yet.",
+        "decision": "Use Tool",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 116.48,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Use Tool",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.03,
+                  "Reply to the user": 0.29,
+                  "Use Tool": 0.68
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 361,
+              "outputTokens": 50,
+              "totalTokens": 411
+            },
+            "confidence": {
+              "decision": 0.57
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "tool_execution",
+        "turn": 1,
+        "duration_sec": 2.5442,
+        "command": "Open my terminal in my content folder.",
+        "result": {
+          "status": "success",
+          "output": "Successfully opened ptyxis at '/home/omar/content' (ran: `ptyxis --new-window -d /home/omar/content`)",
+          "error": null,
+          "exit_code": 0
+        }
+      },
+      {
+        "step": "decision_agent",
+        "turn": 2,
+        "duration_sec": 0.7185,
+        "input_state": "The user sent a query: \"Open my terminal in my content folder.\". Tool was called and returned output: \"Successfully opened ptyxis at '/home/omar/content' (ran: `ptyxis --new-window -d /home/omar/content`)\"",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 100.72,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0.01,
+                  "Reply to the user": 0.99,
+                  "Use Tool": 0
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 392,
+              "outputTokens": 52,
+              "totalTokens": 444
+            },
+            "confidence": {
+              "decision": 0.99
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 2,
+        "duration_sec": 1.6933,
+        "prompt": "User Query: Open my terminal in my content folder.\nTool Output: Successfully opened ptyxis at '/home/omar/content' (ran: `ptyxis --new-window -d /home/omar/content`)",
+        "output": "The terminal is now open in your content folder at `/home/omar/content`. You can access it directly if needed!"
+      }
+    ]
+  },
+  {
+    "run_id": "044c5518-67a0-4f05-b04c-17e08b230142",
+    "timestamp": "2026-09-25T17:57:28.192760+00:00",
+    "user_query": "hi",
+    "cleaned_command": "hi",
+    "total_duration_sec": 3.5284,
+    "final_output": "The tool cannot be used or executed. The message is a casual \"hi\" request, and no action was performed. Let me know if you need assistance! 😊",
+    "steps": [
+      {
+        "step": "formatter_agent",
+        "duration_sec": 0.9291,
+        "input": "hi",
+        "output": "hi"
+      },
+      {
+        "step": "decision_agent",
+        "turn": 1,
+        "duration_sec": 0.944,
+        "input_state": "The user sent a query: \"hi\". Status: No tool called yet.",
+        "decision": "Reply to the user",
+        "raw_api_response": {
+          "ok": true,
+          "model": "typesafe-ai/jev",
+          "latencyMs": 253.28,
+          "result": {
+            "answers": {
+              "decision": {
+                "type": "choice",
+                "choice": "Reply to the user",
+                "probabilities": {
+                  "Retry": 0,
+                  "Continue": 0,
+                  "Reply to the user": 1,
+                  "Use Tool": 0
+                }
+              }
+            },
+            "usage": {
+              "inputTokens": 355,
+              "outputTokens": 52,
+              "totalTokens": 407
+            },
+            "confidence": {
+              "decision": 1
+            },
+            "warnings": []
+          }
+        }
+      },
+      {
+        "step": "reply_agent",
+        "turn": 1,
+        "duration_sec": 1.6551,
+        "prompt": "User Query: hi\nTool Output: No tool called",
+        "output": "The tool cannot be used or executed. The message is a casual \"hi\" request, and no action was performed. Let me know if you need assistance! 😊"
+      }
+    ]
   }
 ]

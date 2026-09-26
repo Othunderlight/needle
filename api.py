@@ -13,7 +13,33 @@ import uvicorn
 
 # Import the workflow function from your existing script file
 # (Rename 'workflow' if your file has a different name)
-from codex import run_workflow
+# from codex import run_workflow
+from ndl import run_command_agent
+
+def format_agent_response(agent_output: Any) -> str:
+    """Extracts a clean string message from the dict returned by run_command_agent."""
+    if isinstance(agent_output, dict):
+        if agent_output.get("error"):
+            return str(agent_output["error"])
+
+        results = agent_output.get("results")
+        if results:
+            if isinstance(results, list):
+                items = [str(item) for item in results if item]
+                if not items:
+                    return ""
+                if len(items) == 1:
+                    return items[0]
+                if len(items) == 2:
+                    return f"{items[0]} and {items[1]}"
+                return f"{', '.join(items[:-1])}, and {items[-1]}"
+            return str(results)
+
+        if agent_output.get("success"):
+            return "Command executed successfully."
+        return "Command completed with no output."
+
+    return str(agent_output or "")
 
 app = FastAPI(title="OpenAI-Compatible Agent Workflow API", version="1.0.0")
 
@@ -171,10 +197,14 @@ async def chat_completions(
         raise HTTPException(status_code=400, detail="No user message provided.")
 
     try:
-        final_answer = await run_workflow(
-            user_query=user_query,
-            max_retries=req.max_retries or 3,
-        )
+        # final_answer = await run_workflow(
+        #     user_query=user_query,
+        #     max_retries=req.max_retries or 3,
+        # )
+
+        # Run sync function in thread pool and convert dict output to string
+        raw_result = await asyncio.to_thread(run_command_agent, user_query)
+        final_answer = format_agent_response(raw_result)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Agent workflow error: {str(exc)}")
 

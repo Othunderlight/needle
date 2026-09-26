@@ -125,12 +125,13 @@ formatter_agent = Agent(
 reply_agent = Agent(
     name="ReplyAgent",
     model=ollama_model,
-    instructions=(
-        "You formulate the final response to the user based STRICTLY on the tool execution output.\n"
-        "- If Tool Output is 'No tool called' or describes a failure, tell the user honestly that the action was not performed or failed.\n"
-        "- NEVER claim that you opened or performed something unless Tool Output explicitly confirms success.\n"
+    instructions = (
+        "You formulate the final response to the user based on their message and the tool execution output.\n"
+        "- If the user's message is a greeting, casual conversation, or a general question that does not require an action or tool, respond to them directly, naturally, and helpfully.\n"
+        "- If the user requested an action/tool, but the Tool Output is 'No tool called' or describes a failure, tell the user honestly that the action was not performed or failed.\n"
+        "- NEVER claim that you opened, executed, or performed an action unless the Tool Output explicitly confirms success.\n"
         "- Keep the answer concise, friendly, and natural."
-    ),
+    )
 )
 
 
