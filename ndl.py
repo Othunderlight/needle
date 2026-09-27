@@ -200,6 +200,10 @@ FOLDERS_DATABASE = {
         "path": os.path.expanduser("~/content/remotion"),        # Change to your actual path
         "aliases": ["remotion", "remotion folder"],
     },
+    "ddi": {
+        "path": os.path.expanduser("~/Downloads/ddi"),
+        "aliases": ["ddi", "ddinter", "drugs"],
+    },
 }
 
 

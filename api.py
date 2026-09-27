@@ -175,6 +175,14 @@ def extract_last_user_message(messages: List[ChatMessage]) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Health Check
+# ---------------------------------------------------------------------------
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
+
+# ---------------------------------------------------------------------------
 # Endpoints
 # ---------------------------------------------------------------------------
 @app.get("/v1/models")
@@ -237,6 +245,9 @@ async def chat_completions(
             total_tokens=len(user_query.split()) + len((final_answer or "").split()),
         ),
     )
+
+
+
 
 
 if __name__ == "__main__":
